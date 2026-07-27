@@ -549,30 +549,13 @@
     </footer>
 
     <script>
-            const KVDB_BUCKET = 'Y7aymxQ3WYFmfTjRSmJGa7';
+            const STORAGE = 'birthday_wishes_maniezz';
             const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
             if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
 
-            let wishes = [];
+            let wishes = JSON.parse(localStorage.getItem(STORAGE)) || [];
 
-            async function loadWishes() {
-                try {
-                    const res = await fetch(`https://kvdb.io/${KVDB_BUCKET}/wishes`);
-                    if (!res.ok) throw new Error('empty');
-                    const data = await res.json();
-                    if (Array.isArray(data)) {
-                        wishes = data.map(w => ({
-                            name: w.name,
-                            msg: w.msg,
-                            t: w.t || ''
-                        }));
-                    }
-                } catch(e) {
-                    wishes = [];
-                }
-                renderWall();
-                renderOwner();
-            }
+            function save() { localStorage.setItem(STORAGE, JSON.stringify(wishes)); }
 
             function updateCountdown() {
                 const now = new Date();
@@ -599,39 +582,22 @@
                 el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
             });
 
-            async function submitMessage() {
+            function submitMessage() {
                 const name = document.getElementById('inputName').value.trim() || 'Anonymous';
                 const msg = document.getElementById('inputMsg').value.trim();
                 if (!msg) { alert('Please write a wish first!'); return; }
 
-                const btn = document.querySelector('.submit-btn');
-                btn.disabled = true;
-                btn.textContent = 'Sending...';
-
-                const newWish = {
-                    name,
-                    msg,
+                wishes.unshift({
+                    name, msg,
                     t: new Date().toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
-                };
-                wishes.unshift(newWish);
-
-                try {
-                    await fetch(`https://kvdb.io/${KVDB_BUCKET}/wishes`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(wishes)
-                    });
-                    document.getElementById('inputName').value = '';
-                    document.getElementById('inputMsg').value = '';
-                    loadWishes();
-                } catch(e) {
-                    alert('Failed to send wish. Please try again!');
-                }
-                btn.disabled = false;
-                btn.textContent = '💌 Send Wish';
+                });
+                save();
+                document.getElementById('inputName').value = '';
+                document.getElementById('inputMsg').value = '';
+                render();
             }
 
-            function renderWall() {
+            function render() {
                 const c = document.getElementById('messageWall');
                 if (wishes.length === 0) {
                     c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
@@ -645,6 +611,7 @@
                     `).join('');
                 }
                 document.getElementById('msgCount').textContent = wishes.length + ' wishes';
+                renderOwner();
             }
 
             const OWNER_PIN = '2907';
@@ -661,14 +628,14 @@
 
             function renderOwner() {
                 const c = document.getElementById('ownerMessages');
-                const special = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
-                c.innerHTML = special.length === 0
+                const secret = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
+                c.innerHTML = secret.length === 0
                     ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
-                    : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
+                    : secret.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
             }
 
             function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-            loadWishes();
-    </script>
+            render();
+        </script>
 </body>
 </html>
