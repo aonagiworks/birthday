@@ -3,37 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎂 Happy Birthday!</title>
+    <title>Blue Birthday · maniezz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0a1a;
-            --bg-card: #1a1128;
-            --border: #2d1f45;
-            --gold: #f0c55a;
-            --purple: #a855f7;
-            --pink: #f472b6;
-            --cyan: #67e8f9;
-            --text: #f0e6ff;
-            --text-muted: #9a8aaa;
+            --blue-bg: #b8d4e3;
+            --blue-soft: #d4e4ef;
+            --blue-deep: #7aafcc;
+            --navy: #4a6c80;
+            --navy-dark: #3a5667;
+            --cream: #f5f0e8;
+            --white: #ffffff;
+            --yellow: #f7d774;
+            --pink: #f4b8c4;
+            --text: #3a5667;
+            --text-light: #6b8a9c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background: var(--blue-bg);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
             background-image:
-                radial-gradient(ellipse at 30% 10%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 90%, rgba(244, 114, 182, 0.10) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 15%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 85%, rgba(122,175,204,0.3) 0%, transparent 50%);
         }
 
+        /* ===== Doodles ===== */
+        .doodle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .doodle svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 8px rgba(58,86,103,0.08));
+        }
+        .cloud-doodle {
+            stroke: var(--navy);
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .heart-doodle {
+            stroke: var(--pink);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+        }
+        .plus-doodle {
+            stroke: var(--navy);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        /* Float animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        @keyframes drift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+        }
+
+        /* ===== Header ===== */
         header {
-            padding: 20px 24px;
+            padding: 20px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -41,141 +89,199 @@
             z-index: 10;
         }
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.5rem;
-            color: var(--gold);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo .dot {
+            width: 10px; height: 10px;
+            background: var(--yellow);
+            border-radius: 50%;
+            display: inline-block;
         }
         .pin-btn {
-            background: rgba(240, 200, 90, 0.15);
-            border: 1px solid rgba(240, 200, 90, 0.3);
-            color: var(--gold);
-            padding: 8px 16px;
+            background: var(--cream);
+            border: 2px solid var(--navy);
+            color: var(--navy);
+            padding: 8px 18px;
             border-radius: 100px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             cursor: pointer;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
         }
-        .pin-btn:hover { background: rgba(240, 200, 90, 0.25); }
+        .pin-btn:hover { background: var(--navy); color: white; }
 
-        /* HERO + COUNTDOWN */
+        /* ===== Hero ===== */
         .hero {
             text-align: center;
-            padding: 60px 24px 80px;
+            padding: 80px 24px 100px;
             position: relative;
             overflow: hidden;
         }
-        .hero .confetti {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.8rem;
-            animation: fall linear infinite;
-            pointer-events: none;
-            opacity: 0.7;
+        .hero .photo-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--cream);
+            border: 4px solid var(--navy);
+            margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 12px 40px rgba(58,86,103,0.15);
+            animation: floatSlow 4s ease-in-out infinite;
         }
-        @keyframes fall {
-            0% { transform: translateX(-50%) translateY(-40px); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(100vh); opacity: 0; }
+        .hero .photo-circle::after {
+            content: '+';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 300;
         }
         .hero .tag {
             display: inline-block;
-            background: rgba(168, 85, 247, 0.2);
-            color: var(--purple);
-            padding: 6px 18px;
+            background: var(--navy);
+            color: white;
+            padding: 6px 20px;
             border-radius: 100px;
             font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            font-size: 0.78rem;
+            letter-spacing: 2px;
             margin-bottom: 20px;
+            text-transform: uppercase;
+            font-family: 'Fredoka', sans-serif;
         }
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            background: linear-gradient(135deg, var(--gold), var(--pink), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: clamp(3rem, 9vw, 5.5rem);
+            line-height: 1;
+            color: var(--navy-dark);
+            margin-bottom: 10px;
+        }
+        .hero h1 .script {
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            color: var(--blue-deep);
+            display: block;
+            font-size: 0.5em;
+            margin-top: 4px;
         }
         .hero .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 36px;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            max-width: 440px;
+            margin: 16px auto 0;
+            line-height: 1.7;
         }
 
-        /* Countdown */
+        /* ===== Countdown ===== */
         .countdown {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-top: 36px;
+            position: relative;
+            z-index: 5;
         }
         .cd-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px 22px;
-            min-width: 80px;
+            background: var(--cream);
+            border: 2.5px solid var(--navy);
+            border-radius: 20px;
+            padding: 16px 20px;
+            min-width: 75px;
             text-align: center;
+            box-shadow: 3px 3px 0 var(--navy);
         }
         .cd-box .num {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.4rem;
-            font-weight: 800;
-            color: var(--gold);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy-dark);
             line-height: 1;
         }
         .cd-box .lbl {
-            font-size: 0.72rem;
-            color: var(--text-muted);
+            font-size: 0.68rem;
+            color: var(--text-light);
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
-        /* SECTION HEADING */
+        /* ===== Post-it Note (form heading) ===== */
         .section-head {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
+            position: relative;
         }
         .section-head h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--text);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--navy-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
-        .section-head span {
+        .section-head .sub {
             font-family: 'Caveat', cursive;
             font-size: 1.3rem;
-            color: var(--pink);
+            color: var(--blue-deep);
+            margin-top: 2px;
         }
 
-        /* FORM */
+        /* ===== Polaroid Form ===== */
         .form-section {
-            max-width: 600px;
-            margin: 0 auto 60px;
+            max-width: 560px;
+            margin: 0 auto 80px;
             padding: 0 24px;
+            position: relative;
         }
-        .form-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 36px 32px;
+        .polaroid-card {
+            background: var(--white);
+            border-radius: 4px;
+            padding: 28px 28px 36px;
+            box-shadow: 0 12px 40px rgba(58,86,103,0.15);
+            position: relative;
+            transform: rotate(-1deg);
         }
-        .form-card label {
+        .polaroid-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 24px;
+            background: rgba(247, 215, 116, 0.5);
+            border-radius: 2px;
+        }
+        .polaroid-card label {
             display: block;
             font-size: 0.85rem;
             margin-bottom: 6px;
-            color: var(--text-muted);
+            color: var(--navy);
+            font-weight: 600;
         }
-        .form-card input, .form-card textarea {
+        .polaroid-card input,
+        .polaroid-card textarea {
             width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background: var(--cream);
+            border: 2px solid var(--blue-soft);
+            border-radius: 12px;
             padding: 10px 14px;
             color: var(--text);
             font-family: 'Inter', sans-serif;
@@ -183,182 +289,212 @@
             margin-bottom: 16px;
             transition: border-color 0.2s;
         }
-        .form-card input:focus, .form-card textarea:focus {
-            border-color: var(--purple);
-        }
-        .form-card textarea { resize: vertical; min-height: 90px; }
+        .polaroid-card input:focus,
+        .polaroid-card textarea:focus { border-color: var(--blue-deep); }
+        .polaroid-card textarea { resize: vertical; min-height: 90px; }
         .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--purple), var(--pink));
+            background: var(--navy);
             color: white;
-            border: none;
+            border: 2px solid var(--navy);
             padding: 12px 20px;
-            border-radius: 12px;
+            border-radius: 100px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Fredoka', sans-serif;
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168, 85, 247, 0.3); }
+        .submit-btn:hover { background: var(--navy-dark); transform: translateY(-1px); }
 
-        /* SECTION HEADING */
-        .section-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 20px;
-        }
-        .section-label h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            color: var(--text);
-        }
-        .section-label span {
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            color: var(--pink);
-        }
-
-        /* FORM */
         .live-preview {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--blue-soft);
+            border: 2px dashed var(--blue-deep);
+            border-radius: 14px;
+            padding: 16px 18px;
             margin-top: 16px;
-            font-size: 0.95rem;
-            color: var(--text-muted);
+            font-size: 0.92rem;
+            color: var(--text-light);
             line-height: 1.6;
             font-style: italic;
         }
-        .live-preview em { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--pink); font-style: normal; }
+        .live-preview em {
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            color: var(--blue-deep);
+            font-style: normal;
+        }
 
-        /* WALL */
+        /* ===== Wall ===== */
         .wall-section {
             max-width: 800px;
             margin: 0 auto;
-            padding: 40px 24px 100px;
+            padding: 20px 24px 100px;
+            position: relative;
         }
         .messages {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
         }
         .msg-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px 24px;
+            background: var(--white);
+            border-radius: 4px;
+            padding: 18px 22px 22px;
+            width: 100%;
+            max-width: 360px;
             position: relative;
-            animation: fadeInUp 0.4s ease-out;
+            box-shadow: 0 10px 30px rgba(58,86,103,0.12);
+            animation: fadeInUp 0.5s ease-out;
         }
+        .msg-card:nth-child(odd) { transform: rotate(1deg); }
+        .msg-card:nth-child(even) { transform: rotate(-2deg); }
+        .msg-card:nth-child(3n) { transform: rotate(-0.5deg); }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px) rotate(0); }
+            to { opacity: 1; }
+        }
+        .msg-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 18px;
+            background: rgba(247, 215, 116, 0.5);
+            border-radius: 2px;
         }
         .msg-card .msg-from {
-            font-weight: 700;
-            color: var(--purple);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: var(--blue-deep);
             font-size: 0.95rem;
             margin-bottom: 6px;
         }
         .msg-card .msg-text {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: var(--text);
             line-height: 1.6;
             font-style: italic;
         }
         .msg-card .msg-time {
-            font-size: 0.72rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            color: var(--text-light);
             margin-top: 8px;
         }
         .empty-message {
             text-align: center;
-            color: var(--text-muted);
+            color: var(--text-light);
             padding: 60px 20px;
         }
         .empty-message p {
             font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
         }
 
-        /* OWNER SECTION (hidden by default) */
+        /* ===== Owner Section ===== */
         .owner-section {
             display: none;
-            max-width: 600px;
+            max-width: 560px;
             margin: 0 auto 80px;
             padding: 0 24px;
         }
         .owner-card {
-            background: var(--bg-card);
-            border: 2px solid var(--purple);
+            background: var(--navy);
             border-radius: 24px;
             padding: 36px 32px;
             text-align: center;
+            color: white;
         }
         .owner-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
             margin-bottom: 6px;
         }
-        .owner-card .special-msgs {
+        .owner-card p.sub {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .owner-msgs {
             text-align: left;
-            margin-top: 24px;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-        .owner-card .special-msg {
-            background: rgba(168, 85, 247, 0.1);
-            border-radius: 12px;
+        .owner-msg {
+            background: rgba(255,255,255,0.1);
+            border-radius: 14px;
             padding: 14px 18px;
         }
-        .special-msg .name { font-weight: 700; color: var(--purple); }
-        .special-msg .txt { font-style: italic; margin-top: 4px; font-size: 0.9rem; }
+        .owner-msg .name {
+            font-weight: 700;
+            color: var(--yellow);
+            font-family: 'Fredoka', sans-serif;
+        }
+        .owner-msg .txt {
+            font-style: italic;
+            margin-top: 4px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+        }
 
+        /* ===== Footer ===== */
         footer {
             text-align: center;
             padding: 30px 20px 50px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.82rem;
+        }
+        footer .made {
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            color: var(--navy);
         }
 
         @media (max-width: 480px) {
-            .form-card, .msg-card { padding: 24px 18px; }
-            .cd-box { min-width: 65px; padding: 12px 14px; }
-            .cd-box .num { font-size: 1.6rem; }
+            .polaroid-card { padding: 22px 20px 28px; }
+            .msg-card { max-width: 100%; }
+            .cd-box { min-width: 60px; padding: 12px 14px; }
+            .cd-box .num { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Doodles scattered -->
+    <div class="doodle" style="top:5%; left:8%; width:60px; height:40px; animation: drift 18s ease-in-out infinite;">
+        <svg viewBox="0 0 60 40"><path class="cloud-doodle" d="M10,30 Q5,30 5,22 Q5,15 12,15 Q12,10 18,10 Q22,5 28,8 Q32,4 38,8 Q44,5 48,12 Q55,12 55,20 Q55,28 48,28 L12,30 Z"/></svg>
+    </div>
+    <div class="doodle" style="top:12%; right:12%; width:40px; height:40px; animation: float 4s ease-in-out infinite;">
+        <svg viewBox="0 0 40 40"><path class="plus-doodle" d="M20,8 L20,32 M8,20 L32,20"/></svg>
+    </div>
+    <div class="doodle" style="top:40%; right:5%; width:50px; height:35px; animation: drift 22s ease-in-out infinite reverse;">
+        <svg viewBox="0 0 50 35"><path class="cloud-doodle" d="M8,25 Q3,25 3,18 Q3,12 10,12 Q10,7 16,8 Q20,3 25,6 Q30,3 33,8 Q40,8 40,15 Q47,15 47,22 Q47,28 40,28 L10,25 Z"/></svg>
+    </div>
+    <div class="doodle" style="top:70%; left:6%; width:30px; height:28px; animation: float 5s ease-in-out infinite;">
+        <svg viewBox="0 0 30 28"><path class="heart-doodle" d="M15,25 Q5,17 5,10 Q5,5 10,5 Q13,5 15,8 Q17,5 20,5 Q25,5 25,10 Q25,17 15,25 Z"/></svg>
+    </div>
+    <div class="doodle" style="top:85%; right:8%; width:35px; height:35px; animation: floatSlow 6s ease-in-out infinite;">
+        <svg viewBox="0 0 35 35"><path class="plus-doodle" d="M17,6 L17,29 M6,17 L29,17"/></svg>
+    </div>
+    <div class="doodle" style="top:55%; left:3%; width:45px; height:32px; animation: drift 20s ease-in-out infinite;">
+        <svg viewBox="0 0 45 32"><path class="cloud-doodle" d="M7,22 Q2,22 2,16 Q2,10 9,10 Q9,6 15,7 Q19,2 24,5 Q28,2 31,7 Q38,7 38,14 Q43,14 43,20 Q43,26 36,26 L8,22 Z"/></svg>
+    </div>
+
     <header>
-        <div class="logo">🎂 birthday</div>
-        <button class="pin-btn" onclick="unlockOwner()">🔑 I'm the birthday person</button>
+        <div class="logo"><span class="dot"></span>blue birthday</div>
+        <button class="pin-btn" onclick="unlockOwner()">🔒 for maniezz only</button>
     </header>
 
     <!-- HERO -->
-    <section class="hero" id="hero">
-        <!-- Confetti dots -->
-        <script>
-            for(let i=0; i<20; i++) {
-                const c = document.createElement('div');
-                c.className = 'confetti';
-                c.textContent = ['🎈','🎉','🎂','🎊','✨','🎁','🎀','🌸','💫','🪅'][i%10];
-                c.style.left = (5 + Math.random()*90) + '%';
-                c.style.animationDuration = (3 + Math.random()*6) + 's';
-                c.style.animationDelay = Math.random()*5 + 's';
-                c.style.fontSize = (1 + Math.random()*2) + 'rem';
-                document.getElementById('hero').appendChild(c);
-            }
-        </script>
-
-        <div class="tag">🎈 YOU'RE INVITED 🎈</div>
-        <h1>maniezz Birthday</h1>
-        <p class="subtitle">29 Juli • Tinggalkan ucapan dan doa terbaikmu di bawah ✨</p>
+    <section class="hero">
+        <div class="photo-circle">🎂</div>
+        <div class="tag">you're invited</div>
+        <h1>Blue Birthday<span class="script">untuk maniezz ✿</span></h1>
+        <p class="subtitle">29 Juli • Kasih ucapan dan doa terbaikmu di bawah ya. Setiap pesan berarti 💙</p>
 
         <div class="countdown" id="countdown">
             <div class="cd-box"><div class="num" id="cd-days">00</div><div class="lbl">Hari</div></div>
@@ -370,11 +506,11 @@
 
     <!-- FORM -->
     <div class="form-section">
-        <div class="section-label">
-            <h2>Tulis Ucapan 🖊️</h2>
-            <span>buat maniezz</span>
+        <div class="section-head">
+            <h2>✎ Tulis Ucapan</h2>
+            <div class="sub">buat maniezz</div>
         </div>
-        <div class="form-card">
+        <div class="polaroid-card">
             <label>Nama kamu (opsional, kosongkan untuk anonim)</label>
             <input type="text" id="inputName" placeholder="Anonymous" maxlength="40">
             <label>Ucapan / Doa</label>
@@ -388,53 +524,48 @@
 
     <!-- WALL -->
     <div class="wall-section">
-        <div class="section-label">
+        <div class="section-head">
             <h2>💬 Wall Ucapan</h2>
-            <span id="msgCount">0 ucapan</span>
+            <div class="sub" id="msgCount">0 ucapan</div>
         </div>
         <div class="messages" id="messageWall">
             <div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>
         </div>
     </div>
 
-    <!-- OWNER SECTION -->
+    <!-- OWNER -->
     <div class="owner-section" id="ownerSection">
         <div class="owner-card">
             <h3>🔮 For You Only</h3>
-            <p style="color:var(--text-muted); margin-bottom: 20px;">Pesan spesial yang cuma kamu yang bisa buka</p>
-            <div class="ownermessages" id="ownerMessages">
-                <p style="color:var(--text-muted)">Belum ada pesan khusus untukmu...</p>
+            <p class="sub">Pesan rahasia yang cuma maniezz yang bisa buka</p>
+            <div class="owner-msgs" id="ownerMessages">
+                <p style="color:rgba(255,255,255,0.6)">Belum ada pesan rahasia buatmu...</p>
             </div>
         </div>
     </div>
 
     <footer>
-        dibuat dengan cinta untuk maniezz · 2026
+        <div class="made">dibuat dengan 💙 untuk maniezz · 2026</div>
     </footer>
 
     <script>
-        const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29); // July = 6 (zero-index), day 29
-        // If already past this year, set to next year
+        const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
         if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
 
-        const STORAGE_KEY = 'birthday_wishes_29juli';
+        const STORAGE_KEY = 'blue_birthday_maniezz';
         let wishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-        // --- COUNTDOWN ---
         function updateCountdown() {
             const now = new Date();
             const diff = BIRTHDAY - now;
             if (diff <= 0) {
-                document.getElementById('cd-days').textContent = '00';
-                document.getElementById('cd-hours').textContent = '00';
-                document.getElementById('cd-mins').textContent = '00';
-                document.getElementById('cd-secs').textContent = '00';
+                ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
                 return;
             }
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
             document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
             document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
             document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
@@ -443,31 +574,17 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- LIVE PREVIEW ---
         document.getElementById('inputMsg').addEventListener('input', function() {
             const val = this.value.trim();
             const el = document.getElementById('livePreview');
-            if (val) {
-                el.innerHTML = `<em>Preview:</em> "${val}"`;
-            } else {
-                el.innerHTML = `<em>Preview:</em> ucapan kamu akan muncul di sini...`;
-            }
+            el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> ucapan kamu akan muncul di sini...`;
         });
 
-        // --- SUBMIT ---
         function submitMessage() {
             const name = document.getElementById('inputName').value.trim() || 'Anonymous';
             const msg = document.getElementById('inputMsg').value.trim();
-            if (!msg) {
-                alert('Isi ucapan dulu ya!');
-                return;
-            }
-            const w = {
-                name,
-                msg,
-                t: new Date().toLocaleString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
-            };
-            wishes.unshift(w);
+            if (!msg) { alert('Isi ucapan dulu ya!'); return; }
+            wishes.unshift({ name, msg, t: new Date().toLocaleString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
             document.getElementById('inputName').value = '';
             document.getElementById('inputMsg').value = '';
@@ -475,13 +592,12 @@
             renderOwner();
         }
 
-        // --- RENDER WALL ---
         function renderWall() {
-            const container = document.getElementById('messageWall');
+            const c = document.getElementById('messageWall');
             if (wishes.length === 0) {
-                container.innerHTML = '<div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>';
+                c.innerHTML = '<div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>';
             } else {
-                container.innerHTML = wishes.map(w => `
+                c.innerHTML = wishes.map(w => `
                     <div class="msg-card">
                         <div class="msg-from">${escapeHTML(w.name)}</div>
                         <div class="msg-text">"${escapeHTML(w.msg)}"</div>
@@ -492,41 +608,27 @@
             document.getElementById('msgCount').textContent = wishes.length + ' ucapan';
         }
 
-        // --- OWNER SECTION ---
-        const OWNER_PIN = '2907'; // boleh diganti
-
+        const OWNER_PIN = '2907';
         function unlockOwner() {
-            const pin = prompt('🔑 Masukkan PIN pemilik (hanya untuk yang berulang tahun):');
+            const pin = prompt('🔑 Masukkan PIN maniezz:');
             if (pin === OWNER_PIN) {
                 document.getElementById('ownerSection').style.display = 'block';
                 document.getElementById('ownerSection').scrollIntoView();
                 renderOwner();
             } else {
-                alert('PIN salah. Bagian ini cuma buat yang ulang tahun ya 😊');
+                alert('PIN salah. Bagian ini cuma buat maniezz ya 😊');
             }
         }
 
         function renderOwner() {
-            const container = document.getElementById('ownerMessages');
+            const c = document.getElementById('ownerMessages');
             const special = wishes.filter(w => w.msg && (w.msg.includes('spesial') || w.msg.includes('khusus')));
-            if (special.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted)">Belum ada pesan rahasia buatmu...</p>';
-            } else {
-                container.innerHTML = special.map(w => `
-                    <div class="special-msg">
-                        <div class="name">${escapeHTML(w.name)}</div>
-                        <div class="txt">"${escapeHTML(w.msg)}"</div>
-                    </div>
-                `).join('');
-            }
+            c.innerHTML = special.length === 0
+                ? '<p style="color:rgba(255,255,255,0.6)">Belum ada pesan rahasia buatmu...</p>'
+                : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
         }
 
-        function escapeHTML(s) {
-            const div = document.createElement('div');
-            div.textContent = s;
-            return div.innerHTML;
-        }
-
+        function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
         renderWall();
     </script>
 </body>
