@@ -549,120 +549,126 @@
     </footer>
 
     <script>
-        const API = 'http://13.212.233.90/api/wishes';
-        const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
-        if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
+            const KVDB_BUCKET = 'Y7aymxQ3WYFmfTjRSmJGa7';
+            const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
+            if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
 
-        let wishes = [];
+            let wishes = [];
 
-        // Fetch wishes from API
-        async function loadWishes() {
-            try {
-                const res = await fetch(API);
-                if (!res.ok) throw new Error('Network error');
-                const data = await res.json();
-                wishes = data.map(w => ({
-                    name: w.name,
-                    msg: w.msg,
-                    t: w.created_at ? new Date(w.created_at).toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : ''
-                }));
-            } catch(e) {
-                wishes = [];
-            }
-            renderWall();
-            renderOwner();
-        }
-
-        function updateCountdown() {
-            const now = new Date();
-            const diff = BIRTHDAY - now;
-            if (diff <= 0) {
-                ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
-                return;
-            }
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff % 86400000) / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-            document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-            document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-            document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-            document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        document.getElementById('inputMsg').addEventListener('input', function() {
-            const val = this.value.trim();
-            const el = document.getElementById('livePreview');
-            el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
-        });
-
-        async function submitMessage() {
-            const name = document.getElementById('inputName').value.trim() || 'Anonymous';
-            const msg = document.getElementById('inputMsg').value.trim();
-            if (!msg) { alert('Please write a wish first!'); return; }
-
-            const btn = document.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
-
-            try {
-                const res = await fetch(API, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ name, msg })
-                });
-                if (!res.ok) throw new Error('Send failed');
-                document.getElementById('inputName').value = '';
-                document.getElementById('inputMsg').value = '';
-                await loadWishes();
-            } catch(e) {
-                alert('Failed to send wish. Please try again!');
-            }
-            btn.disabled = false;
-            btn.textContent = '💌 Send Wish';
-        }
-
-        function renderWall() {
-            const c = document.getElementById('messageWall');
-            if (wishes.length === 0) {
-                c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
-            } else {
-                c.innerHTML = wishes.map(w => `
-                    <div class="msg-card">
-                        <div class="msg-from">${escapeHTML(w.name)}</div>
-                        <div class="msg-text">"${escapeHTML(w.msg)}"</div>
-                        <div class="msg-time">${w.t}</div>
-                    </div>
-                `).join('');
-            }
-            document.getElementById('msgCount').textContent = wishes.length + ' wishes';
-        }
-
-        const OWNER_PIN = '2907';
-        function unlockOwner() {
-            const pin = prompt("🔑 Enter maniezz's PIN:");
-            if (pin === OWNER_PIN) {
-                document.getElementById('ownerSection').style.display = 'block';
-                document.getElementById('ownerSection').scrollIntoView();
+            async function loadWishes() {
+                try {
+                    const res = await fetch(`https://kvdb.io/${KVDB_BUCKET}/wishes`);
+                    if (!res.ok) throw new Error('empty');
+                    const data = await res.json();
+                    if (Array.isArray(data)) {
+                        wishes = data.map(w => ({
+                            name: w.name,
+                            msg: w.msg,
+                            t: w.t || ''
+                        }));
+                    }
+                } catch(e) {
+                    wishes = [];
+                }
+                renderWall();
                 renderOwner();
-            } else {
-                alert('Wrong PIN. This part is for maniezz only 😊');
             }
-        }
 
-        function renderOwner() {
-            const c = document.getElementById('ownerMessages');
-            const special = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
-            c.innerHTML = special.length === 0
-                ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
-                : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
-        }
+            function updateCountdown() {
+                const now = new Date();
+                const diff = BIRTHDAY - now;
+                if (diff <= 0) {
+                    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+                    return;
+                }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+                document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+                document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+                document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
 
-        function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+            document.getElementById('inputMsg').addEventListener('input', function() {
+                const val = this.value.trim();
+                const el = document.getElementById('livePreview');
+                el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
+            });
 
-        loadWishes();
+            async function submitMessage() {
+                const name = document.getElementById('inputName').value.trim() || 'Anonymous';
+                const msg = document.getElementById('inputMsg').value.trim();
+                if (!msg) { alert('Please write a wish first!'); return; }
+
+                const btn = document.querySelector('.submit-btn');
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                const newWish = {
+                    name,
+                    msg,
+                    t: new Date().toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+                };
+                wishes.unshift(newWish);
+
+                try {
+                    await fetch(`https://kvdb.io/${KVDB_BUCKET}/wishes`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(wishes)
+                    });
+                    document.getElementById('inputName').value = '';
+                    document.getElementById('inputMsg').value = '';
+                    loadWishes();
+                } catch(e) {
+                    alert('Failed to send wish. Please try again!');
+                }
+                btn.disabled = false;
+                btn.textContent = '💌 Send Wish';
+            }
+
+            function renderWall() {
+                const c = document.getElementById('messageWall');
+                if (wishes.length === 0) {
+                    c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
+                } else {
+                    c.innerHTML = wishes.map(w => `
+                        <div class="msg-card">
+                            <div class="msg-from">${escapeHTML(w.name)}</div>
+                            <div class="msg-text">"${escapeHTML(w.msg)}"</div>
+                            <div class="msg-time">${w.t}</div>
+                        </div>
+                    `).join('');
+                }
+                document.getElementById('msgCount').textContent = wishes.length + ' wishes';
+            }
+
+            const OWNER_PIN = '2907';
+            function unlockOwner() {
+                const pin = prompt("🔑 Enter maniezz's PIN:");
+                if (pin === OWNER_PIN) {
+                    document.getElementById('ownerSection').style.display = 'block';
+                    document.getElementById('ownerSection').scrollIntoView();
+                    renderOwner();
+                } else {
+                    alert('Wrong PIN. This part is for maniezz only 😊');
+                }
+            }
+
+            function renderOwner() {
+                const c = document.getElementById('ownerMessages');
+                const special = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
+                c.innerHTML = special.length === 0
+                    ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
+                    : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
+            }
+
+            function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+            loadWishes();
     </script>
 </body>
 </html>
