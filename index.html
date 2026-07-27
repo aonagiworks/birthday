@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Happy Birthday!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0a1a;
+            --bg-card: #1a1128;
+            --border: #2d1f45;
+            --gold: #f0c55a;
+            --purple: #a855f7;
+            --pink: #f472b6;
+            --cyan: #67e8f9;
+            --text: #f0e6ff;
+            --text-muted: #9a8aaa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 30% 10%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 90%, rgba(244, 114, 182, 0.10) 0%, transparent 50%);
+        }
+
+        header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+        .pin-btn {
+            background: rgba(240, 200, 90, 0.15);
+            border: 1px solid rgba(240, 200, 90, 0.3);
+            color: var(--gold);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .pin-btn:hover { background: rgba(240, 200, 90, 0.25); }
+
+        /* HERO + COUNTDOWN */
+        .hero {
+            text-align: center;
+            padding: 60px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero .confetti {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            animation: fall linear infinite;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        @keyframes fall {
+            0% { transform: translateX(-50%) translateY(-40px); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(100vh); opacity: 0; }
+        }
+        .hero .tag {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--purple);
+            padding: 6px 18px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            background: linear-gradient(135deg, var(--gold), var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+        }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cd-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 22px;
+            min-width: 80px;
+            text-align: center;
+        }
+        .cd-box .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .cd-box .lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SECTION HEADING */
+        .section-head {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .section-head h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text);
+        }
+        .section-head span {
+            font-family: 'Caveat', cursive;
+            font-size: 1.3rem;
+            color: var(--pink);
+        }
+
+        /* FORM */
+        .form-section {
+            max-width: 600px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+        }
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px 32px;
+        }
+        .form-card label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+        .form-card input, .form-card textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .form-card input:focus, .form-card textarea:focus {
+            border-color: var(--purple);
+        }
+        .form-card textarea { resize: vertical; min-height: 90px; }
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168, 85, 247, 0.3); }
+
+        /* Live Preview */
+        .live-preview {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 16px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-style: italic;
+        }
+        .live-preview em { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--pink); font-style: normal; }
+
+        /* WALL */
+        .wall-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px 100px;
+        }
+        .messages {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .msg-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 24px;
+            position: relative;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg-card .msg-from {
+            font-weight: 700;
+            color: var(--purple);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+        .msg-card .msg-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.6;
+            font-style: italic;
+        }
+        .msg-card .msg-time {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        .empty-message {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 60px 20px;
+        }
+        .empty-message p {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+        }
+
+        /* OWNER SECTION (hidden by default) */
+        .owner-section {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto 80px;
+            padding: 0 24px;
+        }
+        .owner-card {
+            background: var(--bg-card);
+            border: 2px solid var(--purple);
+            border-radius: 24px;
+            padding: 36px 32px;
+            text-align: center;
+        }
+        .owner-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+        .owner-card .special-msgs {
+            text-align: left;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .owner-card .special-msg {
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+        .special-msg .name { font-weight: 700; color: var(--purple); }
+        .special-msg .txt { font-style: italic; margin-top: 4px; font-size: 0.9rem; }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px 50px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 480px) {
+            .form-card, .msg-card { padding: 24px 18px; }
+            .cd-box { min-width: 65px; padding: 12px 14px; }
+            .cd-box .num { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🎂 birthday</div>
+        <button class="pin-btn" onclick="unlockOwner()">🔑 I'm the birthday person</button>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <!-- Confetti dots -->
+        <script>
+            for(let i=0; i<20; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.textContent = ['🎈','🎉','🎂','🎊','✨','🎁','🎀','🌸','💫','🪅'][i%10];
+                c.style.left = (5 + Math.random()*90) + '%';
+                c.style.animationDuration = (3 + Math.random()*6) + 's';
+                c.style.animationDelay = Math.random()*5 + 's';
+                c.style.fontSize = (1 + Math.random()*2) + 'rem';
+                document.getElementById('hero').appendChild(c);
+            }
+        </script>
+
+        <div class="tag">🎈 YOU'RE INVITED 🎈</div>
+        <h1>[Nama] Birthday</h1>
+        <p class="subtitle">29 Juli • Tinggalkan ucapan dan doa terbaikmu di bawah ✨</p>
+
+        <div class="countdown" id="countdown">
+            <div class="cd-box"><div class="num" id="cd-days">00</div><div class="lbl">Hari</div></div>
+            <div class="cd-box"><div class="num" id="cd-hours">00</div><div class="lbl">Jam</div></div>
+            <div class="cd-box"><div class="num" id="cd-mins">00</div><div class="lbl">Menit</div></div>
+            <div class="cd-box"><div class="num" id="cd-secs">00</div><div class="lbl">Detik</div></div>
+        </div>
+    </section>
+
+    <!-- FORM -->
+    <div class="form-section">
+        <div class="section-label">
+            <h2>Tulis Ucapan 🖊️</h2>
+            <span>buat [Nama]</span>
+        </div>
+        <div class="form-card">
+            <label>Nama kamu</label>
+            <input type="text" id="inputName" placeholder="Nina" maxlength="40">
+            <label>Ucapan / Doa</label>
+            <textarea id="inputMsg" placeholder="Happy birthday! Semoga..." maxlength="300"></textarea>
+            <button class="submit-btn" onclick="submitMessage()">💌 Kirim Ucapan</button>
+            <div class="live-preview" id="livePreview">
+                <em>Preview:</em> ucapan kamu akan muncul di sini...
+            </div>
+        </div>
+    </div>
+
+    <!-- WALL -->
+    <div class="wall-section">
+        <div class="section-label">
+            <h2>💬 Wall Ucapan</h2>
+            <span id="msgCount">0 ucapan</span>
+        </div>
+        <div class="messages" id="messageWall">
+            <div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>
+        </div>
+    </div>
+
+    <!-- OWNER SECTION -->
+    <div class="owner-section" id="ownerSection">
+        <div class="owner-card">
+            <h3>🔮 For You Only</h3>
+            <p style="color:var(--text-muted); margin-bottom: 20px;">Pesan spesial yang cuma kamu yang bisa buka</p>
+            <div class="ownermessages" id="ownerMessages">
+                <p style="color:var(--text-muted)">Belum ada pesan khusus untukmu...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        dibuat dengan cinta untuk [Nama] · {new Date().getFullYear()}
+    </footer>
+
+    <script>
+        const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29); // July = 6 (zero-index), day 29
+        // If already past this year, set to next year
+        if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
+
+        const STORAGE_KEY = 'birthday_wishes_29juli';
+        let wishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        // --- COUNTDOWN ---
+        function updateCountdown() {
+            const now = new Date();
+            const diff = BIRTHDAY - now;
+            if (diff <= 0) {
+                document.getElementById('cd-days').textContent = '00';
+                document.getElementById('cd-hours').textContent = '00';
+                document.getElementById('cd-mins').textContent = '00';
+                document.getElementById('cd-secs').textContent = '00';
+                return;
+            }
+            const d = Math.floor(diff / (1000*60*60*24));
+            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+            document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+            document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+            document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- LIVE PREVIEW ---
+        document.getElementById('inputMsg').addEventListener('input', function() {
+            const val = this.value.trim();
+            const el = document.getElementById('livePreview');
+            if (val) {
+                el.innerHTML = `<em>Preview:</em> "${val}"`;
+            } else {
+                el.innerHTML = `<em>Preview:</em> ucapan kamu akan muncul di sini...`;
+            }
+        });
+
+        // --- SUBMIT ---
+        function submitMessage() {
+            const name = document.getElementById('inputName').value.trim();
+            const msg = document.getElementById('inputMsg').value.trim();
+            if (!name || !msg) {
+                alert('Isi nama dan ucapan dulu ya!');
+                return;
+            }
+            const w = {
+                name,
+                msg,
+                t: new Date().toLocaleString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+            };
+            wishes.unshift(w);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputMsg').value = '';
+            renderWall();
+            renderOwner();
+        }
+
+        // --- RENDER WALL ---
+        function renderWall() {
+            const container = document.getElementById('messageWall');
+            if (wishes.length === 0) {
+                container.innerHTML = '<div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>';
+            } else {
+                container.innerHTML = wishes.map(w => `
+                    <div class="msg-card">
+                        <div class="msg-from">${escapeHTML(w.name)}</div>
+                        <div class="msg-text">"${escapeHTML(w.msg)}"</div>
+                        <div class="msg-time">${w.t}</div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('wallCount').textContent = wishes.length + ' ucapan';
+        }
+
+        // --- OWNER SECTION ---
+        const OWNER_PIN = '2907'; // boleh diganti
+
+        function unlockOwner() {
+            const pin = prompt('🔑 Masukkan PIN pemilik (hanya untuk yang berulang tahun):');
+            if (pin === OWNER_PIN) {
+                document.getElementById('ownerSection').style.display = 'block';
+                document.getElementById('ownerSection').scrollIntoView();
+                renderOwner();
+            } else {
+                alert('PIN salah. Seksi ini cuma buat yang berulang tahun ya 😊');
+            }
+        }
+
+        function renderOwner() {
+            const container = document.getElementById('ownerMessages');
+            const special = wishes.filter(w => w.msg && (w.msg.includes('spesial') || w.msg.includes('khusus')));
+            if (special.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted)">Belum ada pesan privat...</p>';
+            } else {
+                container.innerHTML = special.map(w => `
+                    <div class="special-msg">
+                        <div class="name">${escapeHTML(w.name)}</div>
+                        <div class="txt">"${escapeHTML(w.msg)}"</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function escapeHTML(s) {
+            const div = document.createElement('div');
+            div.textContent = s;
+            return div.innerHTML;
+        }
+
+        renderWall();
+    </script>
+</body>
+</html>
