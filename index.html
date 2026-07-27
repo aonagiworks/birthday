@@ -1,658 +1,815 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blue Birthday · maniezz</title>
+    <title>Blue Birthday · maniezz turns 21 ✿</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Special 21st Birthday Greeting Card for maniezz 💙 Send your warmest wishes and prayers!">
+    <meta name="theme-color" content="#b5d6e6">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --blue-bg: #b8d4e3;
-            --blue-soft: #d4e4ef;
-            --blue-deep: #7aafcc;
-            --navy: #4a6c80;
-            --navy-dark: #3a5667;
-            --cream: #f5f0e8;
-            --white: #ffffff;
-            --yellow: #f7d774;
-            --pink: #f4b8c4;
-            --text: #3a5667;
-            --text-light: #6b8a9c;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--blue-bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(ellipse at 20% 15%, rgba(255,255,255,0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 85%, rgba(122,175,204,0.3) 0%, transparent 50%);
-        }
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        /* ===== Doodles ===== */
-        .doodle {
-            position: absolute;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .doodle svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 2px 8px rgba(58,86,103,0.08));
-        }
-        .cloud-doodle {
-            stroke: var(--navy);
-            stroke-width: 2.5;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        .heart-doodle {
-            stroke: var(--pink);
-            stroke-width: 2;
-            fill: none;
-            stroke-linecap: round;
-        }
-        .plus-doodle {
-            stroke: var(--navy);
-            stroke-width: 2;
-            stroke-linecap: round;
-        }
 
-        /* Float animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-8px) rotate(2deg); }
-        }
-        @keyframes drift {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(20px); }
-        }
-
-        /* ===== Header ===== */
-        header {
-            padding: 20px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
-        .logo {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            font-size: 1.3rem;
-            color: var(--navy);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .logo .dot {
-            width: 10px; height: 10px;
-            background: var(--yellow);
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .pin-btn {
-            background: var(--cream);
-            border: 2px solid var(--navy);
-            color: var(--navy);
-            padding: 8px 18px;
-            border-radius: 100px;
-            font-size: 0.82rem;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s;
-        }
-        .pin-btn:hover { background: var(--navy); color: white; }
-
-        /* ===== Hero ===== */
-        .hero {
-            text-align: center;
-            padding: 80px 24px 100px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero .photo-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: var(--cream);
-            border: 4px solid var(--navy);
-            margin: 0 auto 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 12px 40px rgba(58,86,103,0.15);
-            animation: floatSlow 4s ease-in-out infinite;
-        }
-        .hero .photo-circle::after {
-            content: '+';
-            position: absolute;
-            top: -20px;
-            right: -10px;
-            font-size: 2rem;
-            color: var(--navy);
-            font-weight: 300;
-        }
-        .hero .tag {
-            display: inline-block;
-            background: var(--navy);
-            color: white;
-            padding: 6px 20px;
-            border-radius: 100px;
-            font-weight: 600;
-            font-size: 0.78rem;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-family: 'Fredoka', sans-serif;
-        }
-        .hero h1 {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            font-size: clamp(3rem, 9vw, 5.5rem);
-            line-height: 1;
-            color: var(--navy-dark);
-            margin-bottom: 10px;
-        }
-        .hero h1 .script {
-            font-family: 'Caveat', cursive;
-            font-weight: 700;
-            color: var(--blue-deep);
-            display: block;
-            font-size: 0.5em;
-            margin-top: 4px;
-        }
-        .hero .subtitle {
-            font-size: 1.05rem;
-            color: var(--text-light);
-            max-width: 440px;
-            margin: 16px auto 0;
-            line-height: 1.7;
-        }
-
-        /* ===== Countdown ===== */
-        .countdown {
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 36px;
-            position: relative;
-            z-index: 5;
-        }
-        .cd-box {
-            background: var(--cream);
-            border: 2.5px solid var(--navy);
-            border-radius: 20px;
-            padding: 16px 20px;
-            min-width: 75px;
-            text-align: center;
-            box-shadow: 3px 3px 0 var(--navy);
-        }
-        .cd-box .num {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--navy-dark);
-            line-height: 1;
-        }
-        .cd-box .lbl {
-            font-size: 0.68rem;
-            color: var(--text-light);
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* ===== Post-it Note (form heading) ===== */
-        .section-head {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        .section-head h2 {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: var(--navy-dark);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-head .sub {
-            font-family: 'Caveat', cursive;
-            font-size: 1.3rem;
-            color: var(--blue-deep);
-            margin-top: 2px;
-        }
-
-        /* ===== Polaroid Form ===== */
-        .form-section {
-            max-width: 560px;
-            margin: 0 auto 80px;
-            padding: 0 24px;
-            position: relative;
-        }
-        .polaroid-card {
-            background: var(--white);
-            border-radius: 4px;
-            padding: 28px 28px 36px;
-            box-shadow: 0 12px 40px rgba(58,86,103,0.15);
-            position: relative;
-            transform: rotate(-1deg);
-        }
-        .polaroid-card::before {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 24px;
-            background: rgba(247, 215, 116, 0.5);
-            border-radius: 2px;
-        }
-        .polaroid-card label {
-            display: block;
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-            color: var(--navy);
-            font-weight: 600;
-        }
-        .polaroid-card input,
-        .polaroid-card textarea {
-            width: 100%;
-            background: var(--cream);
-            border: 2px solid var(--blue-soft);
-            border-radius: 12px;
-            padding: 10px 14px;
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            margin-bottom: 16px;
-            transition: border-color 0.2s;
-        }
-        .polaroid-card input:focus,
-        .polaroid-card textarea:focus { border-color: var(--blue-deep); }
-        .polaroid-card textarea { resize: vertical; min-height: 90px; }
-        .submit-btn {
-            width: 100%;
-            background: var(--navy);
-            color: white;
-            border: 2px solid var(--navy);
-            padding: 12px 20px;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Fredoka', sans-serif;
-        }
-        .submit-btn:hover { background: var(--navy-dark); transform: translateY(-1px); }
-
-        .live-preview {
-            background: var(--blue-soft);
-            border: 2px dashed var(--blue-deep);
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-top: 16px;
-            font-size: 0.92rem;
-            color: var(--text-light);
-            line-height: 1.6;
-            font-style: italic;
-        }
-        .live-preview em {
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            color: var(--blue-deep);
-            font-style: normal;
-        }
-
-        /* ===== Wall ===== */
-        .wall-section {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px 24px 100px;
-            position: relative;
-        }
-        .messages {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .msg-card {
-            background: var(--white);
-            border-radius: 4px;
-            padding: 18px 22px 22px;
-            width: 100%;
-            max-width: 360px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(58,86,103,0.12);
-            animation: fadeInUp 0.5s ease-out;
-        }
-        .msg-card:nth-child(odd) { transform: rotate(1deg); }
-        .msg-card:nth-child(even) { transform: rotate(-2deg); }
-        .msg-card:nth-child(3n) { transform: rotate(-0.5deg); }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px) rotate(0); }
-            to { opacity: 1; }
-        }
-        .msg-card::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 18px;
-            background: rgba(247, 215, 116, 0.5);
-            border-radius: 2px;
-        }
-        .msg-card .msg-from {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            color: var(--blue-deep);
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-        }
-        .msg-card .msg-text {
-            font-size: 0.92rem;
-            color: var(--text);
-            line-height: 1.6;
-            font-style: italic;
-        }
-        .msg-card .msg-time {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            margin-top: 8px;
-        }
-        .empty-message {
-            text-align: center;
-            color: var(--text-light);
-            padding: 60px 20px;
-        }
-        .empty-message p {
-            font-family: 'Caveat', cursive;
-            font-size: 1.5rem;
-        }
-
-        /* ===== Owner Section ===== */
-        .owner-section {
-            display: none;
-            max-width: 560px;
-            margin: 0 auto 80px;
-            padding: 0 24px;
-        }
-        .owner-card {
-            background: var(--navy);
-            border-radius: 24px;
-            padding: 36px 32px;
-            text-align: center;
-            color: white;
-        }
-        .owner-card h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-        }
-        .owner-card p.sub {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
-        .owner-msgs {
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .owner-msg {
-            background: rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: 14px 18px;
-        }
-        .owner-msg .name {
-            font-weight: 700;
-            color: var(--yellow);
-            font-family: 'Fredoka', sans-serif;
-        }
-        .owner-msg .txt {
-            font-style: italic;
-            margin-top: 4px;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.9);
-        }
-
-        /* ===== Footer ===== */
-        footer {
-            text-align: center;
-            padding: 30px 20px 50px;
-            color: var(--text-light);
-            font-size: 0.82rem;
-        }
-        footer .made {
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            color: var(--navy);
-        }
-
-        @media (max-width: 480px) {
-            header { padding: 14px 18px; }
-            .logo { font-size: 1.1rem; }
-            .pin-btn { padding: 6px 14px; font-size: 0.72rem; }
-            .hero { padding: 50px 18px 80px; }
-            .photo-circle { width: 140px; height: 140px; font-size: 3rem; }
-            .hero h1 { font-size: 2.6rem; }
-            .hero h1 .script { font-size: 1.1rem; }
-            .hero .subtitle { font-size: 0.95rem; }
-            .tag { font-size: 0.7rem; padding: 5px 14px; }
-            .countdown { gap: 10px; }
-            .cd-box { min-width: 58px; padding: 10px 12px; }
-            .cd-box .num { font-size: 1.4rem; }
-            .cd-box .lbl { font-size: 0.6rem; }
-            .polaroid-card { padding: 22px 18px 28px; transform: rotate(0deg); }
-            .msg-card { max-width: 100%; padding: 16px 18px; transform: rotate(0deg) !important; }
-            .section-head h2 { font-size: 1.4rem; }
-            .empty-message { padding: 40px 12px; }
-            .doodle { display: none; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Doodles scattered -->
-    <div class="doodle" style="top:5%; left:8%; width:60px; height:40px; animation: drift 18s ease-in-out infinite;">
-        <svg viewBox="0 0 60 40"><path class="cloud-doodle" d="M10,30 Q5,30 5,22 Q5,15 12,15 Q12,10 18,10 Q22,5 28,8 Q32,4 38,8 Q44,5 48,12 Q55,12 55,20 Q55,28 48,28 L12,30 Z"/></svg>
-    </div>
-    <div class="doodle" style="top:12%; right:12%; width:40px; height:40px; animation: float 4s ease-in-out infinite;">
-        <svg viewBox="0 0 40 40"><path class="plus-doodle" d="M20,8 L20,32 M8,20 L32,20"/></svg>
-    </div>
-    <div class="doodle" style="top:40%; right:5%; width:50px; height:35px; animation: drift 22s ease-in-out infinite reverse;">
-        <svg viewBox="0 0 50 35"><path class="cloud-doodle" d="M8,25 Q3,25 3,18 Q3,12 10,12 Q10,7 16,8 Q20,3 25,6 Q30,3 33,8 Q40,8 40,15 Q47,15 47,22 Q47,28 40,28 L10,25 Z"/></svg>
-    </div>
-    <div class="doodle" style="top:70%; left:6%; width:30px; height:28px; animation: float 5s ease-in-out infinite;">
-        <svg viewBox="0 0 30 28"><path class="heart-doodle" d="M15,25 Q5,17 5,10 Q5,5 10,5 Q13,5 15,8 Q17,5 20,5 Q25,5 25,10 Q25,17 15,25 Z"/></svg>
-    </div>
-    <div class="doodle" style="top:85%; right:8%; width:35px; height:35px; animation: floatSlow 6s ease-in-out infinite;">
-        <svg viewBox="0 0 35 35"><path class="plus-doodle" d="M17,6 L17,29 M6,17 L29,17"/></svg>
-    </div>
-    <div class="doodle" style="top:55%; left:3%; width:45px; height:32px; animation: drift 20s ease-in-out infinite;">
-        <svg viewBox="0 0 45 32"><path class="cloud-doodle" d="M7,22 Q2,22 2,16 Q2,10 9,10 Q9,6 15,7 Q19,2 24,5 Q28,2 31,7 Q38,7 38,14 Q43,14 43,20 Q43,26 36,26 L8,22 Z"/></svg>
-    </div>
-
-    <header>
-        <div class="logo"><span class="dot"></span>blue birthday</div>
-        <button class="pin-btn" onclick="unlockOwner()">🔒 for maniezz only</button>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero">
-        <div class="photo-circle">🎂</div>
-        <div class="tag">you're invited</div>
-        <h1>Blue Birthday<span class="script">maniezz turns 21 ✿</span></h1>
-        <p class="subtitle">July 29th • Drop your wishes and prayers below. Every message means a lot 💙</p>
-
-        <div class="countdown" id="countdown">
-            <div class="cd-box"><div class="num" id="cd-days">00</div><div class="lbl">Days</div></div>
-            <div class="cd-box"><div class="num" id="cd-hours">00</div><div class="lbl">Hours</div></div>
-            <div class="cd-box"><div class="num" id="cd-mins">00</div><div class="lbl">Mins</div></div>
-            <div class="cd-box"><div class="num" id="cd-secs">00</div><div class="lbl">Secs</div></div>
-        </div>
-    </section>
-
-    <!-- FORM -->
-    <div class="form-section">
-        <div class="section-head">
-            <h2>✎ Write a Wish</h2>
-            <div class="sub">for maniezz</div>
-        </div>
-        <div class="polaroid-card">
-            <label>Your name (optional, leave blank to stay anon)</label>
-            <input type="text" id="inputName" placeholder="Anonymous" maxlength="40">
-            <label>Wish / Prayer</label>
-            <textarea id="inputMsg" placeholder="Happy 21st birthday maniezz! May..." maxlength="300"></textarea>
-            <button class="submit-btn" onclick="submitMessage()">💌 Send Wish</button>
-            <div class="live-preview" id="livePreview">
-                <em>Preview:</em> your wish will appear here...
-            </div>
-        </div>
-    </div>
-
-    <!-- WALL -->
-    <div class="wall-section">
-        <div class="section-head">
-            <h2>💬 Wish Wall</h2>
-            <div class="sub" id="msgCount">0 wishes</div>
-        </div>
-        <div class="messages" id="messageWall">
-            <div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>
-        </div>
-    </div>
-
-    <!-- OWNER -->
-    <div class="owner-section" id="ownerSection">
-        <div class="owner-card">
-            <h3>🔮 For You Only</h3>
-            <p class="sub">Secret messages only maniezz can open</p>
-            <div class="owner-msgs" id="ownerMessages">
-                <p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="made">made with 💙 for maniezz's 21st · 2026</div>
-    </footer>
-
+    <!-- Tailwind CSS v3 via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-            const STORAGE = 'bd_maniezz';
-            const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
-            if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
-
-            let wishes = JSON.parse(localStorage.getItem(STORAGE)) || [];
-
-            function save() { localStorage.setItem(STORAGE, JSON.stringify(wishes)); }
-
-            function updateCountdown() {
-                const diff = BIRTHDAY - new Date();
-                if (diff <= 0) { celebrateBirthday(); return; }
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-                document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-                document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-                document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-            }
-
-            function celebrateBirthday() {
-                var h1 = document.querySelector('.hero h1');
-                var sub = document.querySelector('.hero .subtitle');
-                var tag = document.querySelector('.hero .tag');
-                var cd = document.getElementById('countdown');
-                if (h1) h1.innerHTML = 'Happy Birthday<span class="script">maniezz turns 21</span>';
-                if (sub) sub.textContent = 'The day is finally here hope you have the best 21st';
-                if (tag) tag.textContent = 'HAPPY BIRTHDAY';
-                if (cd) cd.innerHTML = '<div class="cd-box"><div class="num" style="font-size:1.8rem">21</div><div class="lbl">Years</div></div><div class="cd-box"><div class="num" style="font-size:1.8rem">Today</div><div class="lbl">Finally</div></div>';
-            }
-
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
-
-            document.getElementById('inputMsg').addEventListener('input', function () {
-                var val = this.value;
-                document.getElementById('livePreview').innerHTML = val ? '"' + val + '"' : 'your wish will appear here...';
-            });
-
-            function submitMessage() {
-                var name = document.getElementById('inputName').value.trim() || 'Anonymous';
-                var msg = document.getElementById('inputMsg').value.trim();
-                if (!msg) { alert('Write a wish first'); return; }
-                wishes.unshift({ name: name, msg: msg, t: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) });
-                save();
-                document.getElementById('inputName').value = '';
-                document.getElementById('inputMsg').value = '';
-                render();
-            }
-
-            var unlocked = false;
-
-            function render() {
-                var wc = document.getElementById('msgCount');
-                var c = document.getElementById('messageWall');
-                if (wc) wc.textContent = wishes.length + ' wishes';
-                if (unlocked) {
-                    if (wishes.length === 0) {
-                        c.innerHTML = '<div class="empty-message"><p>No wishes yet</p></div>';
-                    } else {
-                        var h = '';
-                        for (var i = 0; i < wishes.length; i++) {
-                            var w = wishes[i];
-                            h += '<div class="msg-card"><div class="msg-from">' + esc(w.name) + '</div><div class="msg-text">"' + esc(w.msg) + '"</div><div class="msg-time">' + esc(w.t) + '</div></div>';
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-base': '#b8d4e3',
+                        'bg-grad-1': '#cce2ee',
+                        'bg-grad-2': '#9abfd4',
+                        'navy-deep': '#1e3a5f',
+                        'navy-mid': '#2c4d75',
+                        'navy-soft': '#4a6c80',
+                        'blue-accent': '#5b9bd5',
+                        'cream': '#faf6f0',
+                        'gold': '#f7d774',
+                        'pink-soft': '#f4b8c4',
+                        'pink-accent': '#e8879b',
+                        'text-dark': '#1e3545',
+                        'text-muted': '#577589',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                        playfair: ['"Playfair Display"', 'serif'],
+                        caveat: ['Caveat', 'cursive'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
+                        'float-slow': 'floatSlow 4s infinite ease-in-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'fade-in-slow': 'fadeIn 0.6s ease forwards',
+                        'slide-in': 'slideIn 0.3s ease',
+                        'fade-out': 'fadeOut 0.3s ease forwards',
+                        'shake': 'shake 0.4s ease',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
+                            '50%': { transform: 'scale(1.06)', opacity: '1' },
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0', transform: 'translateY(14px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            'from': { opacity: '0', transform: 'translateX(30px)' },
+                            'to': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        fadeOut: {
+                            'to': { opacity: '0', transform: 'translateY(10px)' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-8px)' },
+                            '75%': { transform: 'translateX(8px)' },
                         }
-                        c.innerHTML = h;
-                    }
-                } else {
-                    if (wishes.length === 0) {
-                        c.innerHTML = '<div class="empty-message"><p>Be the first to send a wish</p></div>';
-                    } else {
-                        c.innerHTML = '<div class="empty-message"><p>' + wishes.length + ' people sent wishes send yours too</p></div>';
                     }
                 }
             }
+        }
+    </script>
+    <style>
+        /* Fallback raw css for complex backgrounds & custom glassmorphism */
+        body {
+            background-image: 
+                linear-gradient(to bottom, rgba(184, 212, 227, 0.45), rgba(154, 191, 212, 0.65)),
+                url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.65);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .blown-out .cake-glow { opacity: 0; }
+        
+        /* Wish cards random rotation */
+        .wish-card:nth-child(3n+1) { transform: rotate(-1deg); }
+        .wish-card:nth-child(3n+2) { transform: rotate(1.2deg); }
+        .wish-card:nth-child(3n+3) { transform: rotate(-0.5deg); }
+        .wish-card:hover { transform: translateY(-6px) rotate(0deg) !important; z-index: 10; }
+        
+        /* Custom Checkbox */
+        .custom-checkbox { accent-color: #1e3a5f; }
+        
+        /* Hide scrollbar for cleaner look if needed */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(30, 58, 95, 0.2); border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-bg-base text-text-dark min-h-screen relative overflow-x-hidden font-sans">
 
-            function unlockOwner() {
-                if (prompt('Enter PIN:') === '2907') {
-                    unlocked = true;
-                    document.getElementById('ownerSection').style.display = 'block';
-                    document.getElementById('ownerSection').scrollIntoView();
-                    render();
-                } else { alert('Wrong PIN!'); }
+    <!-- Particle Background -->
+    <canvas id="bgCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <div class="relative z-10 max-w-[1000px] mx-auto px-4 sm:px-6 pb-20">
+        <!-- Header -->
+        <header class="py-6 flex justify-between items-center">
+            <a href="#" onclick="skipCountdown()" class="flex items-center gap-3 no-underline group select-none">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-navy-deep to-navy-mid rounded-full flex items-center justify-center text-gold text-xl shadow-lg shadow-navy-deep/20 animate-pulse-glow">🎂</div>
+                <div class="font-outfit font-bold text-xl sm:text-2xl text-navy-deep tracking-tight">blue<span class="text-blue-accent font-medium">birthday</span></div>
+            </a>
+            <div class="flex items-center gap-3">
+                <button onclick="openModal()" class="glass-panel text-navy-deep px-4 py-2 sm:px-5 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-navy-deep/10 hover:bg-navy-deep hover:text-white hover:-translate-y-0.5 transition-all duration-300 cursor-pointer relative z-20" id="btnUnlockModal">
+                    <span>🔒</span> for maniezz only
+                </button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="text-center pt-8 pb-12 sm:pt-10 sm:pb-16 relative">
+            <div class="inline-flex items-center gap-2 bg-navy-deep text-gold px-4 py-2 sm:px-6 sm:py-2 rounded-full font-outfit font-semibold text-xs sm:text-sm tracking-wider uppercase mb-6 sm:mb-8 shadow-xl shadow-navy-deep/20 animate-float-slow">
+                ✨ Special Birthday Invitation ✨
+            </div>
+            <h1 id="mainTitle" class="font-playfair text-[2.8rem] sm:text-6xl md:text-[5.2rem] font-bold text-navy-deep leading-[1.1] mb-3 sm:mb-4 cursor-pointer select-none" title="Click 3 times to skip countdown!" onclick="skipCountdown()">
+                Blue Birthday
+                <span class="font-caveat text-blue-accent block text-[0.65em] font-bold mt-1">maniezz turns 21 ✿</span>
+            </h1>
+            <p class="text-[0.98rem] sm:text-lg text-text-muted max-w-[520px] mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
+                July 29th • Welcome to the wish & prayer space! Leave your sweet messages and prayers for maniezz's special day 💙
+            </p>
+
+            <!-- Interactive Cake -->
+            <div class="relative w-40 h-40 sm:w-44 sm:h-44 mx-auto mb-8 cursor-pointer group" id="cakeContainer" title="Click to blow candles!">
+                <div class="cake-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 sm:w-56 sm:h-56 rounded-full bg-[radial-gradient(circle,rgba(247,215,116,0.4)_0%,transparent_70%)] z-0 animate-pulse-glow transition-opacity duration-300"></div>
+                <div class="glass-panel relative z-10 w-full h-full border-[3px] rounded-full flex flex-col items-center justify-center shadow-[0_16px_40px_rgba(30,58,95,0.12)] transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2">
+                    <div class="text-[4rem] sm:text-[4.8rem] leading-none drop-shadow-xl transition-transform duration-300" id="cakeEmoji">🎂</div>
+                </div>
+                <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-gold text-navy-deep px-3.5 py-1 rounded-full text-xs font-bold whitespace-nowrap shadow-md animate-bounce-slow z-20" id="cakeHint">✨ Blow Candles!</div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="glass-panel !backdrop-blur-[20px] rounded-3xl p-5 sm:p-6 md:px-8 max-w-[600px] mx-auto shadow-xl shadow-navy-deep/10">
+                <!-- Countdown Grid -->
+                <div id="countdownGrid" class="grid grid-cols-4 gap-3 sm:gap-4">
+                    <div class="glass-card rounded-2xl p-3 sm:p-4 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:bg-white/80">
+                        <div class="font-outfit font-bold text-2xl sm:text-[2.2rem] text-navy-deep leading-none mb-1.5" id="cd-days">00</div>
+                        <div class="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[1.2px] text-text-muted">Days</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-3 sm:p-4 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:bg-white/80">
+                        <div class="font-outfit font-bold text-2xl sm:text-[2.2rem] text-navy-deep leading-none mb-1.5" id="cd-hours">00</div>
+                        <div class="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[1.2px] text-text-muted">Hours</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-3 sm:p-4 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:bg-white/80">
+                        <div class="font-outfit font-bold text-2xl sm:text-[2.2rem] text-navy-deep leading-none mb-1.5" id="cd-mins">00</div>
+                        <div class="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[1.2px] text-text-muted">Mins</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-3 sm:p-4 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:bg-white/80">
+                        <div class="font-outfit font-bold text-2xl sm:text-[2.2rem] text-navy-deep leading-none mb-1.5" id="cd-secs">00</div>
+                        <div class="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[1.2px] text-text-muted">Secs</div>
+                    </div>
+                </div>
+                
+                <!-- Happy Birthday Reveal Element (Shown when countdown = 0) -->
+                <div id="hbdReveal" class="hidden animate-fade-in-slow flex-col items-center justify-center py-4 relative overflow-hidden">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gold/25 rounded-full blur-[50px] pointer-events-none z-0"></div>
+                    <div class="relative z-10 text-gold text-2xl animate-pulse mb-2 flex gap-3">
+                        <span>✨</span><span class="scale-125 -translate-y-1">🌟</span><span>✨</span>
+                    </div>
+                    <h2 class="relative z-10 font-playfair font-bold text-[2rem] sm:text-[2.6rem] text-navy-deep text-center leading-tight mb-1 drop-shadow-sm">
+                        HAPPY BIRTHDAY
+                    </h2>
+                    <div class="relative z-10 font-caveat text-[1.8rem] sm:text-[2.2rem] text-blue-accent font-bold mt-1 animate-float-slow text-center drop-shadow-sm">
+                        maniezz is finally 21! 🎂
+                    </div>
+                    <p class="relative z-10 mt-4 text-text-muted text-[0.85rem] sm:text-[0.95rem] text-center max-w-[400px] font-sans leading-relaxed">
+                        The wait is over! May this special day bring you endless joy and beautiful memories. 💙
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form & Content Section -->
+        <section class="mt-12 sm:mt-16 grid grid-cols-1 gap-12 sm:gap-16">
+            <!-- Form Area -->
+            <div class="max-w-[580px] w-full mx-auto relative px-2 sm:px-0">
+                <div class="text-center mb-6 sm:mb-8">
+                    <h2 class="font-outfit text-[1.7rem] sm:text-[1.9rem] font-bold text-navy-deep flex items-center justify-center gap-2.5">
+                        ✎ Write a Wish
+                    </h2>
+                    <div class="font-caveat text-[1.3rem] sm:text-[1.4rem] text-navy-soft mt-0.5">Share your warmest prayers</div>
+                </div>
+
+                <div class="bg-white rounded-[20px] p-7 sm:p-9 pb-8 sm:pb-10 shadow-[0_16px_40px_rgba(30,58,95,0.12)] relative -rotate-[0.8deg] hover:rotate-0 hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-gold/65 rounded backdrop-blur-sm shadow-sm"></div>
+                    
+                    <div class="mb-5 text-left">
+                        <label class="block text-[0.88rem] font-semibold text-navy-deep mb-2" for="inputName">Your Name (Optional)</label>
+                        <input type="text" id="inputName" class="w-full bg-cream border-2 border-[#e1ebf0] rounded-xl px-4 py-3 font-sans text-[0.95rem] text-text-dark outline-none focus:border-blue-accent focus:bg-white focus:ring-4 focus:ring-blue-accent/15 transition-all duration-250" placeholder="Anonymous" maxlength="40">
+                    </div>
+                    
+                    <div class="mb-5 text-left">
+                        <label class="block text-[0.88rem] font-semibold text-navy-deep mb-2" for="inputMsg">Wish & Prayer</label>
+                        <textarea id="inputMsg" class="w-full bg-cream border-2 border-[#e1ebf0] rounded-xl px-4 py-3 font-sans text-[0.95rem] text-text-dark outline-none focus:border-blue-accent focus:bg-white focus:ring-4 focus:ring-blue-accent/15 transition-all duration-250 resize-y min-h-[110px] leading-relaxed" placeholder="Happy 21st birthday maniezz! May your new age be filled with..." maxlength="300"></textarea>
+                    </div>
+
+                    <button class="w-full bg-gradient-to-br from-navy-deep to-navy-mid text-white rounded-full py-3.5 sm:py-4 px-6 font-outfit text-[0.95rem] sm:text-base font-bold cursor-pointer flex items-center justify-center gap-2.5 shadow-[0_8px_24px_rgba(30,58,95,0.25)] hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(30,58,95,0.35)] hover:from-navy-mid hover:to-navy-deep active:translate-y-0 transition-all duration-300" id="btnSubmitWish">
+                        <span>💌</span> Send Wish
+                    </button>
+                </div>
+            </div>
+
+            <!-- Wish Counter / Privacy Notice Section -->
+            <div class="max-w-[1000px] w-full mx-auto px-2 sm:px-0">
+                <div class="text-center mb-6">
+                    <h2 class="font-outfit text-[1.7rem] sm:text-[1.9rem] font-bold text-navy-deep flex items-center justify-center gap-2.5">
+                        💬 Private Wish Wall
+                    </h2>
+                    <div class="font-caveat text-[1.3rem] sm:text-[1.4rem] text-navy-soft mt-0.5" id="msgCount">0 wishes received</div>
+                </div>
+
+                <div class="text-center py-12 px-6 glass-panel rounded-[28px] max-w-[650px] mx-auto shadow-lg">
+                    <div class="text-4xl mb-3">🔒</div>
+                    <h3 class="font-outfit font-bold text-lg text-navy-deep mb-2">Private & Confidential Wishes</h3>
+                    <p class="text-text-muted text-sm leading-relaxed max-w-[480px] mx-auto mb-5">
+                        All wishes sent here are private and exclusively readable by <strong>maniezz</strong> using the secret PIN! 💙
+                    </p>
+                    <button onclick="openModal()" class="bg-navy-deep text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-md hover:bg-navy-mid transition-all cursor-pointer inline-flex items-center gap-2">
+                        <span>🔑</span> Unlock with PIN (for maniezz)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Secret Owner Section -->
+            <div class="hidden animate-fade-in-slow max-w-[1000px] w-full mx-auto mt-6" id="ownerSection">
+                <div class="bg-gradient-to-br from-navy-deep to-[#152942] rounded-[28px] p-8 sm:p-11 text-white shadow-[0_20px_50px_rgba(15,30,50,0.4)] border border-white/10">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-2">
+                        <div class="font-outfit text-[1.6rem] sm:text-[1.8rem] font-bold text-gold flex items-center gap-3">
+                            <span>🔮</span> maniezz's Secret Area
+                        </div>
+                        <button onclick="resetWishes()" class="bg-red-500/20 text-red-200 border border-red-500/30 hover:bg-red-500 hover:text-white px-4 py-2 rounded-full text-xs font-semibold self-start sm:self-auto cursor-pointer transition-colors duration-200">
+                            🗑️ Reset All Wishes
+                        </button>
+                    </div>
+                    <p class="text-white/70 text-[0.9rem] sm:text-[0.95rem] mb-8">Special secret messages sent by your friends.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="ownerMessages">
+                        <!-- Secret messages will render here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Owner Lock Modal -->
+    <div class="fixed inset-0 bg-[#0f1e32]/70 backdrop-blur-md z-[9999] hidden items-center justify-center transition-all duration-300" id="modalOverlay">
+        <div class="bg-white rounded-[28px] p-8 sm:p-9 w-[90%] max-w-[400px] text-center shadow-[0_24px_60px_rgba(0,0,0,0.4)] scale-95 transition-transform duration-300" id="modalBox">
+            <div class="text-[2.5rem] sm:text-[3rem] mb-3">🗝️</div>
+            <div class="font-outfit text-[1.3rem] sm:text-[1.4rem] font-bold text-navy-deep mb-1.5">Secret Access</div>
+            <div class="text-[0.85rem] sm:text-[0.88rem] text-text-muted mb-6 px-2">Enter secret PIN to unlock special messages for maniezz</div>
+            <input type="password" id="pinInput" class="w-full bg-cream border-2 border-[#d8e5ed] rounded-[14px] p-3 sm:p-[14px] text-[1.5rem] text-center tracking-[8px] font-bold text-navy-deep mb-5 outline-none focus:border-blue-accent" maxlength="4" placeholder="••••">
+            <div class="flex gap-3">
+                <button class="flex-1 p-3 rounded-full font-bold text-[0.9rem] cursor-pointer border-none transition-colors duration-200 bg-[#eef4f8] text-text-muted hover:bg-[#e1e9f0]" id="btnCancelModal">Cancel</button>
+                <button class="flex-1 p-3 rounded-full font-bold text-[0.9rem] cursor-pointer border-none transition-colors duration-200 bg-navy-deep text-white hover:bg-navy-mid" id="btnSubmitPin">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="fixed bottom-6 right-4 sm:right-6 z-[1000] flex flex-col gap-2.5" id="toastContainer"></div>
+
+    <!-- Ambient Audio Toggle & Hidden YouTube Player Frame with Autoplay Permissions -->
+    <iframe id="ytPlayerFrame"
+            src="https://www.youtube.com/embed/X4Abelos_ms?enablejsapi=1&autoplay=1&loop=1&playlist=X4Abelos_ms" 
+            allow="autoplay; encrypted-media" 
+            class="fixed bottom-2 right-2 w-1 h-1 opacity-0.01 pointer-events-none z-[-1]">
+    </iframe>
+    <button class="fixed bottom-6 left-4 sm:left-6 z-[900] glass-panel w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-[1.2rem] sm:text-[1.3rem] cursor-pointer shadow-[0_10px_30px_rgba(30,58,95,0.08)] hover:scale-110 transition-transform duration-300" id="btnAudioToggle" title="Play Birthday Music">🎵</button>
+
+    <script>
+        // Storage & Birthday Date Config
+        const STORAGE_KEY = 'bd_maniezz';
+        const TARGET_PIN = '2907';
+        
+        let now = new Date();
+        let currentYear = now.getFullYear();
+        let birthdayDate = new Date(currentYear, 6, 29); // 29 July
+        
+        if (now > birthdayDate && (now - birthdayDate > 86400000)) {
+            birthdayDate.setFullYear(currentYear + 1);
+        }
+
+        const API_BASE = window.location.origin.includes('github.io') 
+            ? 'https://implies-bathroom-behavioral-exemption.trycloudflare.com' 
+            : '';
+
+        async function fetchWishes() {
+            try {
+                const response = await fetch(`${API_BASE}/api/wishes`);
+                if (response.ok) {
+                    const data = await response.json();
+                    wishes = data;
+                    renderWishes();
+                }
+            } catch (e) {
+                console.log('Error fetching wishes:', e);
+            }
+        }
+
+        let wishes = [];
+        let isOwnerUnlocked = false;
+        let activeTab = 'all';
+        let isCandleBlown = false;
+        let isAudioPlaying = false;
+        let audioContext = null;
+
+        // Canvas Particles Background
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 4 + 1;
+                this.speedY = Math.random() * 0.6 + 0.2;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = ['#ffffff', '#f7d774', '#9abfd4', '#f4b8c4'][Math.floor(Math.random() * 4)];
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < 0) {
+                    this.y = canvas.height + 10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Countdown Timer Logic
+        function updateCountdown() {
+            const diff = birthdayDate - new Date();
+            const cdGrid = document.getElementById('countdownGrid');
+            const hbdReveal = document.getElementById('hbdReveal');
+
+            if (diff <= 0) {
+                if (cdGrid && hbdReveal) {
+                    cdGrid.classList.add('hidden');
+                    hbdReveal.classList.remove('hidden');
+                    hbdReveal.classList.add('flex');
+                }
+                const dayEl = document.getElementById('cd-days');
+                if (dayEl) {
+                    dayEl.textContent = '00';
+                    document.getElementById('cd-hours').textContent = '00';
+                    document.getElementById('cd-mins').textContent = '00';
+                    document.getElementById('cd-secs').textContent = '00';
+                }
+                return;
+            } else {
+                if (cdGrid && hbdReveal) {
+                    cdGrid.classList.remove('hidden');
+                    hbdReveal.classList.add('hidden');
+                    hbdReveal.classList.remove('flex');
+                }
             }
 
-            function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById('ownerMessages').innerHTML = '<p style="color:rgba(255,255,255,0.6)">Secret wishes will appear here when submitted with "secret" or "special"</p>';
-            render();
-        </script>
+            document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+            document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+            document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+            document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Testing Trick to Skip Countdown
+        let skipClicks = 0;
+        window.skipCountdown = function() {
+            skipClicks++;
+            if (skipClicks >= 3) {
+                birthdayDate = new Date(); // set to exactly now
+                updateCountdown();
+                if (typeof confetti === 'function') confetti({ particleCount: 200, spread: 100, origin: { y: 0.3 } });
+                showToast('Time travel successful! 🕒', '⏭️');
+            }
+        };
+
+        // Toast Helper
+        function showToast(msg, icon = '✨') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'bg-navy-deep text-white px-4 sm:px-[22px] py-3 sm:py-[14px] rounded-full text-[0.85rem] sm:text-[0.9rem] font-semibold shadow-[0_10px_28px_rgba(0,0,0,0.2)] flex items-center gap-2.5 animate-slide-in';
+            toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+            
+            // Add automatic fade out class before removing
+            setTimeout(() => {
+                toast.classList.replace('animate-slide-in', 'animate-fade-out');
+            }, 2700);
+
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Submit Wish Handler
+        document.getElementById('btnSubmitWish').addEventListener('click', submitWish);
+
+        async function submitWish() {
+            const nameInput = document.getElementById('inputName');
+            const msgInput = document.getElementById('inputMsg');
+
+            const name = nameInput.value.trim() || 'Anonymous';
+            const msg = msgInput.value.trim();
+
+            if (!msg) {
+                showToast('Please write your wish or prayer first!', '⚠️');
+                msgInput.focus();
+                return;
+            }
+
+            const newWish = {
+                id: String(Date.now()),
+                name: name,
+                message: msg, // API expects 'message'
+                timestamp: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+            };
+
+            nameInput.value = '';
+            msgInput.value = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/wishes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newWish)
+                });
+                
+                if (response.ok) {
+                    await fetchWishes(); // Reload to get exact server state
+                    // Trigger Confetti
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+                    }
+                    showToast('Wish sent safely! (Only readable by maniezz 🔒)', '💌');
+                } else {
+                    showToast('Failed to send wish. Please try again.', '❌');
+                }
+            } catch (e) {
+                showToast('Network error, could not send wish.', '❌');
+            }
+        }
+
+        // Render Wish Cards & Secret Owner Grid
+        function renderWishes() {
+            const countLabel = document.getElementById('msgCount');
+            const ownerGrid = document.getElementById('ownerMessages');
+
+            let totalWishes = wishes.length;
+            let countText = `${totalWishes} wish${totalWishes === 1 ? '' : 'es'} received`;
+            if (countLabel) countLabel.textContent = countText;
+
+            // Render Owner Secret Messages if unlocked
+            if (isOwnerUnlocked && ownerGrid) {
+                if (wishes.length === 0) {
+                    ownerGrid.innerHTML = `<p class="text-white/70 col-span-full">No wishes sent yet.</p>`;
+                } else {
+                    ownerGrid.innerHTML = wishes.map(s => {
+                        const nameStr = (s.name || 'Anonymous').trim() || 'Anonymous';
+                        const initialStr = nameStr.charAt(0).toUpperCase() || 'A';
+                        const msgStr = s.message || s.msg || '';
+                        const timeStr = s.timestamp || s.time || 'Just now';
+                        const likesNum = s.likes || 0;
+                        const likeColor = s.hasLiked ? 'text-red-500' : 'text-pink-soft';
+                        return `
+                        <div class="bg-white/10 backdrop-blur-[10px] border border-white/15 rounded-[16px] p-5 text-left flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="font-bold text-gold text-[0.98rem] flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full bg-gold/20 text-gold text-xs flex items-center justify-center">${escapeHTML(initialStr)}</span>
+                                        <span>${escapeHTML(nameStr)}</span>
+                                    </div>
+                                    <span class="text-[0.72rem] text-white/50">${escapeHTML(timeStr)}</span>
+                                </div>
+                                <div class="text-white/95 text-[0.94rem] leading-relaxed italic mb-4 break-words">"${escapeHTML(msgStr)}"</div>
+                            </div>
+                            <div class="flex justify-end pt-2 border-t border-white/10">
+                                <button class="bg-white/10 border border-white/20 px-3 py-1 rounded-full ${likeColor} text-xs font-semibold cursor-pointer flex items-center gap-1 hover:bg-white/20 transition-all" onclick="likeWish('${s.id}', ${!s.hasLiked})">
+                                    ❤️ <span>${likesNum}</span>
+                                </button>
+                            </div>
+                        </div>
+                    `}).join('');
+                }
+            }
+        }
+
+        // Like Wish Function
+        window.likeWish = async function(id, increment) {
+            try {
+                const response = await fetch(`${API_BASE}/api/like`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id, increment: increment })
+                });
+                if (response.ok) {
+                    await fetchWishes();
+                    if (increment) showToast('Liked this wish! ❤️', '💖');
+                }
+            } catch (e) {
+                console.log('Error liking wish:', e);
+            }
+        };
+
+        // Reset Wishes Function
+        window.resetWishes = async function() {
+            if (confirm('Are you sure you want to reset all wishes?')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/reset`, { method: 'POST' });
+                    if (response.ok) {
+                        await fetchWishes();
+                        showToast('All wishes have been reset!', '🗑️');
+                    }
+                } catch (e) {
+                    console.log('Error resetting wishes:', e);
+                }
+            }
+        };
+
+        // Blow Candles Interactive FX
+        const cakeContainer = document.getElementById('cakeContainer');
+        if (cakeContainer) {
+            cakeContainer.addEventListener('click', function() {
+                const cakeEmoji = document.getElementById('cakeEmoji');
+                const hint = document.getElementById('cakeHint');
+
+                if (!isCandleBlown) {
+                    isCandleBlown = true;
+                    cakeEmoji.textContent = '🍰';
+                    hint.textContent = '✨ Time to Wish!';
+                    this.classList.add('blown-out');
+
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 } });
+                    }
+                    playBirthdayChime();
+                    showToast('Candles blown out! Make a wish! 🌟', '🎉');
+                } else {
+                    isCandleBlown = false;
+                    cakeEmoji.textContent = '🎂';
+                    hint.textContent = '✨ Blow Candles!';
+                    this.classList.remove('blown-out');
+                }
+            });
+        }
+
+        // Modal Lock Controls
+        window.openModal = function() {
+            const os = document.getElementById('ownerSection');
+            if (isOwnerUnlocked && os) {
+                os.classList.remove('hidden');
+                os.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+            const input = document.getElementById('pinInput');
+            
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            if (box) {
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }
+            if (input) {
+                input.value = '';
+                setTimeout(() => input.focus(), 50);
+            }
+        };
+
+        window.closeModal = function() {
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+            const input = document.getElementById('pinInput');
+
+            if (box) {
+                box.classList.remove('scale-100');
+                box.classList.add('scale-95');
+            }
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+            if (input) input.value = '';
+        };
+
+        const btnUnlock = document.getElementById('btnUnlockModal');
+        if (btnUnlock) btnUnlock.addEventListener('click', window.openModal);
+
+        const btnCancelModal = document.getElementById('btnCancelModal');
+        if (btnCancelModal) btnCancelModal.addEventListener('click', window.closeModal);
+
+        const btnSubmitPin = document.getElementById('btnSubmitPin');
+        if (btnSubmitPin) btnSubmitPin.addEventListener('click', verifyPin);
+        
+        const pinInputEl = document.getElementById('pinInput');
+        if (pinInputEl) {
+            pinInputEl.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') verifyPin();
+            });
+        }
+
+        function verifyPin() {
+            const input = document.getElementById('pinInput');
+            const box = document.getElementById('modalBox');
+            
+            if (input && input.value === TARGET_PIN) {
+                isOwnerUnlocked = true;
+                closeModal();
+                const os = document.getElementById('ownerSection');
+                if (os) {
+                    os.classList.remove('hidden');
+                    os.scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                renderWishes();
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                }
+                showToast('Correct PIN! Secret Area Unlocked 🔮', '🔑');
+            } else {
+                if (box) {
+                    box.classList.add('animate-shake');
+                    setTimeout(() => box.classList.remove('animate-shake'), 400);
+                }
+                showToast('Wrong PIN! Please try again.', '❌');
+            }
+        }
+
+        // Web Audio Chime Synthesizer
+        function playBirthdayChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+                notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime + i * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.1);
+                    osc.stop(ctx.currentTime + i * 0.1 + 0.4);
+                });
+            } catch (e) {
+                console.log('Audio not allowed', e);
+            }
+        }
+
+        // YouTube Audio Player Integration (Video ID: X4Abelos_ms)
+        let ytPlayer = null;
+        let isPlayerReady = false;
+
+        window.onYouTubeIframeAPIReady = function() {
+            try {
+                ytPlayer = new YT.Player('ytPlayerFrame', {
+                    events: {
+                        'onReady': (event) => {
+                            isPlayerReady = true;
+                            try {
+                                event.target.unMute();
+                                event.target.playVideo();
+                                isAudioPlaying = true;
+                                const btn = document.getElementById('btnAudioToggle');
+                                if (btn) btn.textContent = '🔊';
+                            } catch (e) {}
+                        }
+                    }
+                });
+            } catch (e) {
+                console.log('YT API ready error', e);
+            }
+        };
+
+        // Try playing on ANY user interaction (click, touch, scroll)
+        function forcePlayAudio() {
+            if (ytPlayer && isPlayerReady) {
+                try {
+                    ytPlayer.unMute();
+                    ytPlayer.playVideo();
+                    isAudioPlaying = true;
+                    const btn = document.getElementById('btnAudioToggle');
+                    if (btn) btn.textContent = '🔊';
+                } catch (e) {}
+            }
+        }
+
+        ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => {
+            document.addEventListener(evt, forcePlayAudio, { once: true });
+        });
+
+        // Inject YouTube API script after defining callback
+        (function loadYTApi() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScript = document.getElementsByTagName('script')[0];
+            if (firstScript && firstScript.parentNode) {
+                firstScript.parentNode.insertBefore(tag, firstScript);
+            } else {
+                document.head.appendChild(tag);
+            }
+        })();
+
+        const btnAudio = document.getElementById('btnAudioToggle');
+        btnAudio.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!isAudioPlaying) {
+                if (ytPlayer && isPlayerReady && typeof ytPlayer.playVideo === 'function') {
+                    try {
+                        ytPlayer.unMute();
+                        ytPlayer.playVideo();
+                        isAudioPlaying = true;
+                        btnAudio.textContent = '🔊';
+                        showToast('Playing YouTube audio 🎵', '🎶');
+                    } catch (e) {
+                        showToast('Error playing audio. Trying again...', '⚠️');
+                    }
+                } else {
+                    showToast('Loading music... Please click again in 1 second!', '🎵');
+                }
+            } else {
+                if (ytPlayer && isPlayerReady && typeof ytPlayer.pauseVideo === 'function') {
+                    try { ytPlayer.pauseVideo(); } catch (e) {}
+                }
+                isAudioPlaying = false;
+                btnAudio.textContent = '🎵';
+                showToast('Music turned off', '🔇');
+            }
+        });
+
+        // Utility: Escape HTML
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Initial Render
+        fetchWishes();
+    </script>
 </body>
 </html>
