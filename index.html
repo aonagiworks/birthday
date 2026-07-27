@@ -662,22 +662,23 @@
                 const c = document.getElementById('messageWall');
                 document.getElementById('msgCount').textContent = wishes.length + ' wishes';
 
-                // Public only sees the count + a friendly hint, NOT individual messages
                 if (!ownerUnlocked) {
-                    c.innerHTML = wishes.length === 0
-                        ? '<div class="empty-message"><p>Be the first to send a wish 💌</p</div>'
-                        : `<div class="empty-message"><p>${wishes.length} people have already sent their wishes 💙</p><p style="font-family:Inter,sans-serif;font-size:0.85rem;color:var(--text-light);margin-top:14px;">Send yours below to make it ${wishes.length + 1}</p</div>`;
+                    if (wishes.length === 0) {
+                        c.innerHTML = '<div class="empty-message"><p>Be the first to send a wish 💌</p></div>';
+                    } else {
+                        c.innerHTML = '<div class="empty-message"><p>' + wishes.length + ' people have already sent their wishes 💙</p><p style="font-family:Inter,sans-serif;font-size:0.85rem;color:var(--text-light);margin-top:14px;">Send yours below to make it ' + (wishes.length + 1) +</p></div>';
+                    }
                 } else {
                     if (wishes.length === 0) {
-                        c.innerHTML = '<div class="empty-message"><p>No wishes yet</p</div>';
+                        c.innerHTML = '<div class="empty-message"><p>No wishes yet</p></div>';
                     } else {
-                        c.innerHTML = wishes.map(w => `
-                            <div class="msg-card">
-                                <div class="msg-from">${escapeHTML(w.name)}</div>
-                                <div class="msg-text">"${escapeHTML(w.msg)}</div>
-                                <div class="msg-time">${w.t</div>
-                           </div>
-                        `).join('');
+                        c.innerHTML = wishes.map(function(w) {
+                            return '<div class="msg-card">' +
+                                '<div class="msg-from">' + escapeHTML(w.name) +</div>' +
+                                '<div class="msg-text">"' + escapeHTML(w.msg) + '"</div>' +
+                                '<div class="msg-time">' + w.t +</div>' +
+                               </div>';
+                        }).join('');
                     }
                 }
                 renderOwner();
@@ -698,10 +699,16 @@
 
             function renderOwner() {
                 const c = document.getElementById('ownerMessages');
-                const secret = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
-                c.innerHTML = secret.length === 0
-                    ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet</p>'
-                    : secret.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}</div</div>`).join('');
+                const secret = wishes.filter(function(w) {
+                    return w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special'));
+                });
+                if (secret.length === 0) {
+                    c.innerHTML = '<p style="color:rgba(255,255,255,0.6)">No secret messages yet</p>';
+                } else {
+                    c.innerHTML = secret.map(function(w) {
+                        return '<div class="owner-msg"><div class="name">' + escapeHTML(w.name) +</div><div class="txt">"' + escapeHTML(w.msg) + '"</div></div>';
+                    }).join('');
+                }
             }
 
             function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
