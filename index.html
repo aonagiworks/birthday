@@ -549,11 +549,29 @@
     </footer>
 
     <script>
+        const API = 'http://13.212.233.90:7777/api/wishes';
         const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
         if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
 
-        const STORAGE_KEY = 'blue_birthday_maniezz';
-        let wishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        let wishes = [];
+
+        // Fetch wishes from API
+        async function loadWishes() {
+            try {
+                const res = await fetch(API);
+                if (!res.ok) throw new Error('Network error');
+                const data = await res.json();
+                wishes = data.map(w => ({
+                    name: w.name,
+                    msg: w.msg,
+                    t: w.created_at ? new Date(w.created_at).toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : ''
+                }));
+            } catch(e) {
+                wishes = [];
+            }
+            renderWall();
+            renderOwner();
+        }
 
         function updateCountdown() {
             const now = new Date();
@@ -580,16 +598,30 @@
             el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
         });
 
-        function submitMessage() {
+        async function submitMessage() {
             const name = document.getElementById('inputName').value.trim() || 'Anonymous';
             const msg = document.getElementById('inputMsg').value.trim();
             if (!msg) { alert('Please write a wish first!'); return; }
-            wishes.unshift({ name, msg, t: new Date().toLocaleString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-            document.getElementById('inputName').value = '';
-            document.getElementById('inputMsg').value = '';
-            renderWall();
-            renderOwner();
+
+            const btn = document.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name, msg })
+                });
+                if (!res.ok) throw new Error('Send failed');
+                document.getElementById('inputName').value = '';
+                document.getElementById('inputMsg').value = '';
+                await loadWishes();
+            } catch(e) {
+                alert('Failed to send wish. Please try again!');
+            }
+            btn.disabled = false;
+            btn.textContent = '💌 Send Wish';
         }
 
         function renderWall() {
@@ -622,14 +654,15 @@
 
         function renderOwner() {
             const c = document.getElementById('ownerMessages');
-            const special = wishes.filter(w => w.msg && (w.msg.includes('secret') || w.msg.includes('special')));
+            const special = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
             c.innerHTML = special.length === 0
                 ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
                 : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
         }
 
         function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-        renderWall();
+
+        loadWishes();
     </script>
 </body>
 </html>
