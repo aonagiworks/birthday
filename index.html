@@ -493,31 +493,31 @@
     <section class="hero">
         <div class="photo-circle">🎂</div>
         <div class="tag">you're invited</div>
-        <h1>Blue Birthday<span class="script">untuk maniezz ✿</span></h1>
-        <p class="subtitle">29 Juli • Kasih ucapan dan doa terbaikmu di bawah ya. Setiap pesan berarti 💙</p>
+        <h1>Blue Birthday<span class="script">maniezz turns 21 ✿</span></h1>
+        <p class="subtitle">July 29th • Drop your wishes and prayers below. Every message means a lot 💙</p>
 
         <div class="countdown" id="countdown">
-            <div class="cd-box"><div class="num" id="cd-days">00</div><div class="lbl">Hari</div></div>
-            <div class="cd-box"><div class="num" id="cd-hours">00</div><div class="lbl">Jam</div></div>
-            <div class="cd-box"><div class="num" id="cd-mins">00</div><div class="lbl">Menit</div></div>
-            <div class="cd-box"><div class="num" id="cd-secs">00</div><div class="lbl">Detik</div></div>
+            <div class="cd-box"><div class="num" id="cd-days">00</div><div class="lbl">Days</div></div>
+            <div class="cd-box"><div class="num" id="cd-hours">00</div><div class="lbl">Hours</div></div>
+            <div class="cd-box"><div class="num" id="cd-mins">00</div><div class="lbl">Mins</div></div>
+            <div class="cd-box"><div class="num" id="cd-secs">00</div><div class="lbl">Secs</div></div>
         </div>
     </section>
 
     <!-- FORM -->
     <div class="form-section">
         <div class="section-head">
-            <h2>✎ Tulis Ucapan</h2>
-            <div class="sub">buat maniezz</div>
+            <h2>✎ Write a Wish</h2>
+            <div class="sub">for maniezz</div>
         </div>
         <div class="polaroid-card">
-            <label>Nama kamu (opsional, kosongkan untuk anonim)</label>
+            <label>Your name (optional, leave blank to stay anon)</label>
             <input type="text" id="inputName" placeholder="Anonymous" maxlength="40">
-            <label>Ucapan / Doa</label>
-            <textarea id="inputMsg" placeholder="Happy birthday maniezz! Semoga..." maxlength="300"></textarea>
-            <button class="submit-btn" onclick="submitMessage()">💌 Kirim Ucapan</button>
+            <label>Wish / Prayer</label>
+            <textarea id="inputMsg" placeholder="Happy 21st birthday maniezz! May..." maxlength="300"></textarea>
+            <button class="submit-btn" onclick="submitMessage()">💌 Send Wish</button>
             <div class="live-preview" id="livePreview">
-                <em>Preview:</em> ucapan kamu akan muncul di sini...
+                <em>Preview:</em> your wish will appear here...
             </div>
         </div>
     </div>
@@ -525,11 +525,11 @@
     <!-- WALL -->
     <div class="wall-section">
         <div class="section-head">
-            <h2>💬 Wall Ucapan</h2>
-            <div class="sub" id="msgCount">0 ucapan</div>
+            <h2>💬 Wish Wall</h2>
+            <div class="sub" id="msgCount">0 wishes</div>
         </div>
         <div class="messages" id="messageWall">
-            <div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>
+            <div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>
         </div>
     </div>
 
@@ -537,15 +537,15 @@
     <div class="owner-section" id="ownerSection">
         <div class="owner-card">
             <h3>🔮 For You Only</h3>
-            <p class="sub">Pesan rahasia yang cuma maniezz yang bisa buka</p>
+            <p class="sub">Secret messages only maniezz can open</p>
             <div class="owner-msgs" id="ownerMessages">
-                <p style="color:rgba(255,255,255,0.6)">Belum ada pesan rahasia buatmu...</p>
+                <p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="made">dibuat dengan 💙 untuk maniezz · 2026</div>
+        <div class="made">made with 💙 for maniezz's 21st · 2026</div>
     </footer>
 
     <script>
@@ -577,13 +577,13 @@
         document.getElementById('inputMsg').addEventListener('input', function() {
             const val = this.value.trim();
             const el = document.getElementById('livePreview');
-            el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> ucapan kamu akan muncul di sini...`;
+            el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
         });
 
         function submitMessage() {
             const name = document.getElementById('inputName').value.trim() || 'Anonymous';
             const msg = document.getElementById('inputMsg').value.trim();
-            if (!msg) { alert('Isi ucapan dulu ya!'); return; }
+            if (!msg) { alert('Please write a wish first!'); return; }
             wishes.unshift({ name, msg, t: new Date().toLocaleString('id-ID', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
             document.getElementById('inputName').value = '';
@@ -595,7 +595,7 @@
         function renderWall() {
             const c = document.getElementById('messageWall');
             if (wishes.length === 0) {
-                c.innerHTML = '<div class="empty-message"><p>Belum ada ucapan. Jadilah yang pertama! 🎈</p></div>';
+                c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
             } else {
                 c.innerHTML = wishes.map(w => `
                     <div class="msg-card">
@@ -605,26 +605,26 @@
                     </div>
                 `).join('');
             }
-            document.getElementById('msgCount').textContent = wishes.length + ' ucapan';
+            document.getElementById('msgCount').textContent = wishes.length + ' wishes';
         }
 
         const OWNER_PIN = '2907';
         function unlockOwner() {
-            const pin = prompt('🔑 Masukkan PIN maniezz:');
+            const pin = prompt("🔑 Enter maniezz's PIN:");
             if (pin === OWNER_PIN) {
                 document.getElementById('ownerSection').style.display = 'block';
                 document.getElementById('ownerSection').scrollIntoView();
                 renderOwner();
             } else {
-                alert('PIN salah. Bagian ini cuma buat maniezz ya 😊');
+                alert('Wrong PIN. This part is for maniezz only 😊');
             }
         }
 
         function renderOwner() {
             const c = document.getElementById('ownerMessages');
-            const special = wishes.filter(w => w.msg && (w.msg.includes('spesial') || w.msg.includes('khusus')));
+            const special = wishes.filter(w => w.msg && (w.msg.includes('secret') || w.msg.includes('special')));
             c.innerHTML = special.length === 0
-                ? '<p style="color:rgba(255,255,255,0.6)">Belum ada pesan rahasia buatmu...</p>'
+                ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
                 : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
         }
 
