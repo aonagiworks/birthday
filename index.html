@@ -597,20 +597,30 @@
                 render();
             }
 
+            let ownerUnlocked = false;
+
             function render() {
                 const c = document.getElementById('messageWall');
-                if (wishes.length === 0) {
-                    c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
-                } else {
-                    c.innerHTML = wishes.map(w => `
-                        <div class="msg-card">
-                            <div class="msg-from">${escapeHTML(w.name)}</div>
-                            <div class="msg-text">"${escapeHTML(w.msg)}"</div>
-                            <div class="msg-time">${w.t}</div>
-                        </div>
-                    `).join('');
-                }
                 document.getElementById('msgCount').textContent = wishes.length + ' wishes';
+
+                // Public only sees the count + a friendly hint, NOT individual messages
+                if (!ownerUnlocked) {
+                    c.innerHTML = wishes.length === 0
+                        ? '<div class="empty-message"><p>Be the first to send a wish 💌</p</div>'
+                        : `<div class="empty-message"><p>${wishes.length} people have already sent their wishes 💙</p><p style="font-family:Inter,sans-serif;font-size:0.85rem;color:var(--text-light);margin-top:14px;">Send yours below to make it ${wishes.length + 1}</p</div>`;
+                } else {
+                    if (wishes.length === 0) {
+                        c.innerHTML = '<div class="empty-message"><p>No wishes yet</p</div>';
+                    } else {
+                        c.innerHTML = wishes.map(w => `
+                            <div class="msg-card">
+                                <div class="msg-from">${escapeHTML(w.name)}</div>
+                                <div class="msg-text">"${escapeHTML(w.msg)}</div>
+                                <div class="msg-time">${w.t</div>
+                           </div>
+                        `).join('');
+                    }
+                }
                 renderOwner();
             }
 
@@ -618,9 +628,10 @@
             function unlockOwner() {
                 const pin = prompt("🔑 Enter maniezz's PIN:");
                 if (pin === OWNER_PIN) {
+                    ownerUnlocked = true;
                     document.getElementById('ownerSection').style.display = 'block';
                     document.getElementById('ownerSection').scrollIntoView();
-                    renderOwner();
+                    render();
                 } else {
                     alert('Wrong PIN. This part is for maniezz only 😊');
                 }
@@ -630,8 +641,8 @@
                 const c = document.getElementById('ownerMessages');
                 const secret = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
                 c.innerHTML = secret.length === 0
-                    ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
-                    : secret.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
+                    ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet</p>'
+                    : secret.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}</div</div>`).join('');
             }
 
             function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
