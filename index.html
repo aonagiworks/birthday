@@ -375,7 +375,7 @@
             <span>buat maniezz</span>
         </div>
         <div class="form-card">
-            <label>Nama (opsional, kosongkan untuk anon)</label>
+            <label>Nama kamu (opsional, kosongkan untuk anonim)</label>
             <input type="text" id="inputName" placeholder="Anonymous" maxlength="40">
             <label>Ucapan / Doa</label>
             <textarea id="inputMsg" placeholder="Happy birthday maniezz! Semoga..." maxlength="300"></textarea>
@@ -502,7 +502,7 @@
                 document.getElementById('ownerSection').scrollIntoView();
                 renderOwner();
             } else {
-                alert('PIN salah. Seksi ini cuma buat yang berulang tahun ya 😊');
+                alert('PIN salah. Bagian ini cuma buat yang ulang tahun ya 😊');
             }
         }
 
@@ -510,7 +510,7 @@
             const container = document.getElementById('ownerMessages');
             const special = wishes.filter(w => w.msg && (w.msg.includes('spesial') || w.msg.includes('khusus')));
             if (special.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted)">Belum ada pesan privat...</p>';
+                container.innerHTML = '<p style="color:var(--text-muted)">Belum ada pesan rahasia buatmu...</p>';
             } else {
                 container.innerHTML = special.map(w => `
                     <div class="special-msg">
