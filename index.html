@@ -455,10 +455,35 @@
         }
 
         @media (max-width: 480px) {
-            .polaroid-card { padding: 22px 20px 28px; }
-            .msg-card { max-width: 100%; }
-            .cd-box { min-width: 60px; padding: 12px 14px; }
-            .cd-box .num { font-size: 1.5rem; }
+            header { padding: 14px 18px; }
+            .logo { font-size: 1.1rem; }
+            .pin-btn { padding: 6px 14px; font-size: 0.72rem; }
+            .hero { padding: 50px 18px 80px; }
+            .photo-circle { width: 140px; height: 140px; font-size: 3rem; }
+            .hero h1 { font-size: 2.6rem; }
+            .hero h1 .script { font-size: 1.1rem; }
+            .hero .subtitle { font-size: 0.95rem; }
+            .tag { font-size: 0.7rem; padding: 5px 14px; }
+            .countdown { gap: 10px; }
+            .cd-box { min-width: 58px; padding: 10px 12px; border-width: 2px; box-shadow: 2px 2px 0 var(--navy); }
+            .cd-box .num { font-size: 1.4rem; }
+            .cd-box .lbl { font-size: 0.6rem; }
+            .polaroid-card { padding: 22px 18px 28px; transform: rotate(0deg); }
+            .polaroid-card::before { width: 80px; height: 18px; }
+            .form-card label { font-size: 0.8rem; }
+            .section-head h2 { font-size: 1.4rem; }
+            .section-head .sub { font-size: 1.1rem; }
+            .msg-card { max-width: 100%; padding: 16px 18px 18px; transform: rotate(0deg) !important; }
+            .stat-card { padding: 14px 12px; }
+            .stat-val { font-size: 1.6rem; }
+            .stat-lbl { font-size: 0.75rem; }
+            .empty-message { padding: 40px 12px; }
+            .owner-card { padding: 28px 22px; }
+            .doodle { display: none; }
+        }
+        @media (max-width: 360px) {
+            .cd-box { min-width: 50px; padding: 8px 10px; }
+            .cd-box .num { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -561,7 +586,7 @@
                 const now = new Date();
                 const diff = BIRTHDAY - now;
                 if (diff <= 0) {
-                    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+                    celebrateBirthday();
                     return;
                 }
                 const d = Math.floor(diff / 86400000);
@@ -572,6 +597,40 @@
                 document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
                 document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
                 document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+            }
+
+            function celebrateBirthday() {
+                const h1 = document.querySelector('.hero h1');
+                const script = document.querySelector('.hero h1 .script');
+                const subtitle = document.querySelector('.hero .subtitle');
+                const tag = document.querySelector('.hero .tag');
+                const cd = document.getElementById('countdown');
+                if (h1) {
+                    h1.innerHTML = 'Happy Birthday<span class="script">maniezz turns 21 🎂</span>';
+                }
+                if (subtitle) {
+                    subtitle.textContent = "🎉🎉 The day is finally here. Hope you have the best 21st, maniezz! 💙";
+                }
+                if (tag) tag.textContent = '🎂 IT\'S TODAY 🎂';
+                if (cd) {
+                    cd.innerHTML = `
+                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
+                            <div class="num" style="color:#b8860b;font-size:2.2rem;">🎂</div>
+                            <div class="lbl" style="color:#b8860b;">Today</div>
+                       </div>
+                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
+                            <div class="num" style="color:#b8860b;font-size:2.2rem;">🎉</div>
+                            <div class="lbl" style="color:#b8860b;">Celebrate</div>
+                       </div>
+                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
+                            <div class="num" style="color:#b8860b;font-size:2.2rem;">💙</div>
+                            <div class="lbl" style="color:#b8860b;">Forever</div>
+                       </div>
+                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
+                            <div class="num" style="color:#b8860b;font-size:2.2rem;">21</div>
+                            <div class="lbl" style="color:#b8860b;">Years</div>
+                       </div>`;
+                }
             }
             setInterval(updateCountdown, 1000);
             updateCountdown();
