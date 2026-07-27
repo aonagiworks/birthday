@@ -202,7 +202,25 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168, 85, 247, 0.3); }
 
-        /* Live Preview */
+        /* SECTION HEADING */
+        .section-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+        .section-label h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--text);
+        }
+        .section-label span {
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            color: var(--pink);
+        }
+
+        /* FORM */
         .live-preview {
             background: var(--bg);
             border: 1px solid var(--border);
@@ -339,7 +357,7 @@
         </script>
 
         <div class="tag">🎈 YOU'RE INVITED 🎈</div>
-        <h1>[Nama] Birthday</h1>
+        <h1>maniezz Birthday</h1>
         <p class="subtitle">29 Juli • Tinggalkan ucapan dan doa terbaikmu di bawah ✨</p>
 
         <div class="countdown" id="countdown">
@@ -354,13 +372,13 @@
     <div class="form-section">
         <div class="section-label">
             <h2>Tulis Ucapan 🖊️</h2>
-            <span>buat [Nama]</span>
+            <span>buat maniezz</span>
         </div>
         <div class="form-card">
-            <label>Nama kamu</label>
-            <input type="text" id="inputName" placeholder="Nina" maxlength="40">
+            <label>Nama (opsional, kosongkan untuk anon)</label>
+            <input type="text" id="inputName" placeholder="Anonymous" maxlength="40">
             <label>Ucapan / Doa</label>
-            <textarea id="inputMsg" placeholder="Happy birthday! Semoga..." maxlength="300"></textarea>
+            <textarea id="inputMsg" placeholder="Happy birthday maniezz! Semoga..." maxlength="300"></textarea>
             <button class="submit-btn" onclick="submitMessage()">💌 Kirim Ucapan</button>
             <div class="live-preview" id="livePreview">
                 <em>Preview:</em> ucapan kamu akan muncul di sini...
@@ -391,7 +409,7 @@
     </div>
 
     <footer>
-        dibuat dengan cinta untuk [Nama] · {new Date().getFullYear()}
+        dibuat dengan cinta untuk maniezz · 2026
     </footer>
 
     <script>
@@ -438,10 +456,10 @@
 
         // --- SUBMIT ---
         function submitMessage() {
-            const name = document.getElementById('inputName').value.trim();
+            const name = document.getElementById('inputName').value.trim() || 'Anonymous';
             const msg = document.getElementById('inputMsg').value.trim();
-            if (!name || !msg) {
-                alert('Isi nama dan ucapan dulu ya!');
+            if (!msg) {
+                alert('Isi ucapan dulu ya!');
                 return;
             }
             const w = {
@@ -471,7 +489,7 @@
                     </div>
                 `).join('');
             }
-            document.getElementById('wallCount').textContent = wishes.length + ' ucapan';
+            document.getElementById('msgCount').textContent = wishes.length + ' ucapan';
         }
 
         // --- OWNER SECTION ---
