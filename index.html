@@ -455,35 +455,10 @@
         }
 
         @media (max-width: 480px) {
-            header { padding: 14px 18px; }
-            .logo { font-size: 1.1rem; }
-            .pin-btn { padding: 6px 14px; font-size: 0.72rem; }
-            .hero { padding: 50px 18px 80px; }
-            .photo-circle { width: 140px; height: 140px; font-size: 3rem; }
-            .hero h1 { font-size: 2.6rem; }
-            .hero h1 .script { font-size: 1.1rem; }
-            .hero .subtitle { font-size: 0.95rem; }
-            .tag { font-size: 0.7rem; padding: 5px 14px; }
-            .countdown { gap: 10px; }
-            .cd-box { min-width: 58px; padding: 10px 12px; border-width: 2px; box-shadow: 2px 2px 0 var(--navy); }
-            .cd-box .num { font-size: 1.4rem; }
-            .cd-box .lbl { font-size: 0.6rem; }
-            .polaroid-card { padding: 22px 18px 28px; transform: rotate(0deg); }
-            .polaroid-card::before { width: 80px; height: 18px; }
-            .form-card label { font-size: 0.8rem; }
-            .section-head h2 { font-size: 1.4rem; }
-            .section-head .sub { font-size: 1.1rem; }
-            .msg-card { max-width: 100%; padding: 16px 18px 18px; transform: rotate(0deg) !important; }
-            .stat-card { padding: 14px 12px; }
-            .stat-val { font-size: 1.6rem; }
-            .stat-lbl { font-size: 0.75rem; }
-            .empty-message { padding: 40px 12px; }
-            .owner-card { padding: 28px 22px; }
-            .doodle { display: none; }
-        }
-        @media (max-width: 360px) {
-            .cd-box { min-width: 50px; padding: 8px 10px; }
-            .cd-box .num { font-size: 1.2rem; }
+            .polaroid-card { padding: 22px 20px 28px; }
+            .msg-card { max-width: 100%; }
+            .cd-box { min-width: 60px; padding: 12px 14px; }
+            .cd-box .num { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -574,145 +549,120 @@
     </footer>
 
     <script>
-            const STORAGE = 'birthday_wishes_maniezz';
-            const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
-            if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
+        const API = 'http://13.212.233.90/api/wishes';
+        const BIRTHDAY = new Date(new Date().getFullYear(), 6, 29);
+        if (BIRTHDAY < new Date()) BIRTHDAY.setFullYear(BIRTHDAY.getFullYear() + 1);
 
-            let wishes = JSON.parse(localStorage.getItem(STORAGE)) || [];
+        let wishes = [];
 
-            function save() { localStorage.setItem(STORAGE, JSON.stringify(wishes)); }
-
-            function updateCountdown() {
-                const now = new Date();
-                const diff = BIRTHDAY - now;
-                if (diff <= 0) {
-                    celebrateBirthday();
-                    return;
-                }
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-                document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-                document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-                document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+        // Fetch wishes from API
+        async function loadWishes() {
+            try {
+                const res = await fetch(API);
+                if (!res.ok) throw new Error('Network error');
+                const data = await res.json();
+                wishes = data.map(w => ({
+                    name: w.name,
+                    msg: w.msg,
+                    t: w.created_at ? new Date(w.created_at).toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : ''
+                }));
+            } catch(e) {
+                wishes = [];
             }
+            renderWall();
+            renderOwner();
+        }
 
-            function celebrateBirthday() {
-                const h1 = document.querySelector('.hero h1');
-                const script = document.querySelector('.hero h1 .script');
-                const subtitle = document.querySelector('.hero .subtitle');
-                const tag = document.querySelector('.hero .tag');
-                const cd = document.getElementById('countdown');
-                if (h1) {
-                    h1.innerHTML = 'Happy Birthday<span class="script">maniezz turns 21 🎂</span>';
-                }
-                if (subtitle) {
-                    subtitle.textContent = "🎉🎉 The day is finally here. Hope you have the best 21st, maniezz! 💙";
-                }
-                if (tag) tag.textContent = '🎂 IT\'S TODAY 🎂';
-                if (cd) {
-                    cd.innerHTML = `
-                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
-                            <div class="num" style="color:#b8860b;font-size:2.2rem;">🎂</div>
-                            <div class="lbl" style="color:#b8860b;">Today</div>
-                       </div>
-                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
-                            <div class="num" style="color:#b8860b;font-size:2.2rem;">🎉</div>
-                            <div class="lbl" style="color:#b8860b;">Celebrate</div>
-                       </div>
-                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
-                            <div class="num" style="color:#b8860b;font-size:2.2rem;">💙</div>
-                            <div class="lbl" style="color:#b8860b;">Forever</div>
-                       </div>
-                        <div class="cd-box" style="border-color:#f7d774;color:#b8860b;">
-                            <div class="num" style="color:#b8860b;font-size:2.2rem;">21</div>
-                            <div class="lbl" style="color:#b8860b;">Years</div>
-                       </div>`;
-                }
+        function updateCountdown() {
+            const now = new Date();
+            const diff = BIRTHDAY - now;
+            if (diff <= 0) {
+                ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+                return;
             }
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+            document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+            document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+            document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-            document.getElementById('inputMsg').addEventListener('input', function() {
-                const val = this.value.trim();
-                const el = document.getElementById('livePreview');
-                el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
-            });
+        document.getElementById('inputMsg').addEventListener('input', function() {
+            const val = this.value.trim();
+            const el = document.getElementById('livePreview');
+            el.innerHTML = val ? `<em>Preview:</em> "${val}"` : `<em>Preview:</em> your wish will appear here...`;
+        });
 
-            function submitMessage() {
-                const name = document.getElementById('inputName').value.trim() || 'Anonymous';
-                const msg = document.getElementById('inputMsg').value.trim();
-                if (!msg) { alert('Please write a wish first!'); return; }
+        async function submitMessage() {
+            const name = document.getElementById('inputName').value.trim() || 'Anonymous';
+            const msg = document.getElementById('inputMsg').value.trim();
+            if (!msg) { alert('Please write a wish first!'); return; }
 
-                wishes.unshift({
-                    name, msg,
-                    t: new Date().toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+            const btn = document.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name, msg })
                 });
-                save();
+                if (!res.ok) throw new Error('Send failed');
                 document.getElementById('inputName').value = '';
                 document.getElementById('inputMsg').value = '';
-                render();
+                await loadWishes();
+            } catch(e) {
+                alert('Failed to send wish. Please try again!');
             }
+            btn.disabled = false;
+            btn.textContent = '💌 Send Wish';
+        }
 
-            let ownerUnlocked = false;
+        function renderWall() {
+            const c = document.getElementById('messageWall');
+            if (wishes.length === 0) {
+                c.innerHTML = '<div class="empty-message"><p>No wishes yet. Be the first! 🎈</p></div>';
+            } else {
+                c.innerHTML = wishes.map(w => `
+                    <div class="msg-card">
+                        <div class="msg-from">${escapeHTML(w.name)}</div>
+                        <div class="msg-text">"${escapeHTML(w.msg)}"</div>
+                        <div class="msg-time">${w.t}</div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('msgCount').textContent = wishes.length + ' wishes';
+        }
 
-            function render() {
-                const c = document.getElementById('messageWall');
-                document.getElementById('msgCount').textContent = wishes.length + ' wishes';
-
-                if (!ownerUnlocked) {
-                    if (wishes.length === 0) {
-                        c.innerHTML = '<div class="empty-message"><p>Be the first to send a wish 💌</p></div>';
-                    } else {
-                        c.innerHTML = '<div class="empty-message"><p>' + wishes.length + ' people have already sent their wishes 💙</p><p style="font-family:Inter,sans-serif;font-size:0.85rem;color:var(--text-light);margin-top:14px;">Send yours below to make it ' + (wishes.length + 1) +</p></div>';
-                    }
-                } else {
-                    if (wishes.length === 0) {
-                        c.innerHTML = '<div class="empty-message"><p>No wishes yet</p></div>';
-                    } else {
-                        c.innerHTML = wishes.map(function(w) {
-                            return '<div class="msg-card">' +
-                                '<div class="msg-from">' + escapeHTML(w.name) +</div>' +
-                                '<div class="msg-text">"' + escapeHTML(w.msg) + '"</div>' +
-                                '<div class="msg-time">' + w.t +</div>' +
-                               </div>';
-                        }).join('');
-                    }
-                }
+        const OWNER_PIN = '2907';
+        function unlockOwner() {
+            const pin = prompt("🔑 Enter maniezz's PIN:");
+            if (pin === OWNER_PIN) {
+                document.getElementById('ownerSection').style.display = 'block';
+                document.getElementById('ownerSection').scrollIntoView();
                 renderOwner();
+            } else {
+                alert('Wrong PIN. This part is for maniezz only 😊');
             }
+        }
 
-            const OWNER_PIN = '2907';
-            function unlockOwner() {
-                const pin = prompt("🔑 Enter maniezz's PIN:");
-                if (pin === OWNER_PIN) {
-                    ownerUnlocked = true;
-                    document.getElementById('ownerSection').style.display = 'block';
-                    document.getElementById('ownerSection').scrollIntoView();
-                    render();
-                } else {
-                    alert('Wrong PIN. This part is for maniezz only 😊');
-                }
-            }
+        function renderOwner() {
+            const c = document.getElementById('ownerMessages');
+            const special = wishes.filter(w => w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special')));
+            c.innerHTML = special.length === 0
+                ? '<p style="color:rgba(255,255,255,0.6)">No secret messages yet...</p>'
+                : special.map(w => `<div class="owner-msg"><div class="name">${escapeHTML(w.name)}</div><div class="txt">"${escapeHTML(w.msg)}"</div></div>`).join('');
+        }
 
-            function renderOwner() {
-                const c = document.getElementById('ownerMessages');
-                const secret = wishes.filter(function(w) {
-                    return w.msg && (w.msg.toLowerCase().includes('secret') || w.msg.toLowerCase().includes('special'));
-                });
-                if (secret.length === 0) {
-                    c.innerHTML = '<p style="color:rgba(255,255,255,0.6)">No secret messages yet</p>';
-                } else {
-                    c.innerHTML = secret.map(function(w) {
-                        return '<div class="owner-msg"><div class="name">' + escapeHTML(w.name) +</div><div class="txt">"' + escapeHTML(w.msg) + '"</div></div>';
-                    }).join('');
-                }
-            }
+        function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-            function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-            render();
-        </script>
+        loadWishes();
+    </script>
 </body>
 </html>
