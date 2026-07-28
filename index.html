@@ -305,8 +305,7 @@
     <button class="fixed bottom-6 left-4 sm:left-6 z-[900] glass-panel w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-[1.2rem] sm:text-[1.3rem] cursor-pointer shadow-[0_10px_30px_rgba(30,58,95,0.08)] hover:scale-110 transition-transform duration-300" id="btnAudioToggle" title="Play Birthday Music">🎵</button>
 
     <script>
-        // Storage & Birthday Date Config
-        const STORAGE_KEY = 'bd_maniezz';
+        // Birthday Date Config
         const TARGET_PIN = '2907';
         
         let now = new Date();
@@ -326,55 +325,28 @@
             try {
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             } catch (err) {
-                console.log('Supabase client init error:', err);
+                console.error('Supabase client init error:', err);
             }
         }
 
-        const API_BASE = window.location.origin.includes('github.io') 
-            ? 'https://implies-bathroom-behavioral-exemption.trycloudflare.com' 
-            : '';
-
         async function fetchWishes() {
-            // 1. Try Supabase if configured
-            if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient
-                        .from('wishes')
-                        .select('*')
-                        .order('timestamp', { ascending: false });
-                    if (!error && data) {
-                        wishes = data;
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-                        renderWishes();
-                        return;
-                    }
-                } catch (e) {
-                    console.log('Supabase fetch error, fallback to API or local:', e);
-                }
+            if (!supabaseClient) {
+                console.error('Supabase client is not initialized.');
+                renderWishes();
+                return;
             }
-
-            // 2. Try Python API Server
             try {
-                const response = await fetch(`${API_BASE}/api/wishes`);
-                if (response.ok) {
-                    const data = await response.json();
+                const { data, error } = await supabaseClient
+                    .from('wishes')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+                if (!error && data) {
                     wishes = data;
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-                    renderWishes();
-                    return;
+                } else if (error) {
+                    console.error('Supabase fetch error:', error);
                 }
             } catch (e) {
-                console.log('Backend API unavailable, using localStorage fallback:', e);
-            }
-
-            // 3. Fallback: Read from localStorage
-            try {
-                const localData = localStorage.getItem(STORAGE_KEY);
-                if (localData) {
-                    wishes = JSON.parse(localData);
-                }
-            } catch (e) {
-                console.log('Error parsing local storage wishes:', e);
+                console.error('Supabase fetch exception:', e);
             }
             renderWishes();
         }
@@ -529,7 +501,7 @@
             const newWish = {
                 id: String(Date.now()),
                 name: name,
-                message: msg, // API & Supabase expects 'message'
+                message: msg,
                 timestamp: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
                 likes: 0,
                 hasLiked: false
@@ -538,55 +510,29 @@
             nameInput.value = '';
             msgInput.value = '';
 
-            // 1. Try Supabase first if configured
-            if (supabaseClient) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('wishes')
-                        .insert([newWish]);
-                    if (!error) {
-                        await fetchWishes();
-                        if (typeof confetti === 'function') {
-                            confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
-                        }
-                        showToast('Wish sent safely to Cloud DB! ☁️🔒', '💌');
-                        return;
-                    } else {
-                        console.log('Supabase insert error:', error);
-                    }
-                } catch (e) {
-                    console.log('Supabase submit exception:', e);
-                }
+            if (!supabaseClient) {
+                showToast('Supabase client connection error!', '❌');
+                return;
             }
 
-            // 2. Try Python API Server
             try {
-                const response = await fetch(`${API_BASE}/api/wishes`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newWish)
-                });
-                
-                if (response.ok) {
-                    await fetchWishes(); // Reload to get exact server state
+                const { error } = await supabaseClient
+                    .from('wishes')
+                    .insert([newWish]);
+                if (!error) {
+                    await fetchWishes();
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
                     }
-                    showToast('Wish sent safely! (Only readable by maniezz 🔒)', '💌');
-                    return;
+                    showToast('Wish sent safely to Cloud DB! ☁️🔒', '💌');
+                } else {
+                    console.error('Supabase insert error:', error);
+                    showToast('Failed to send wish: ' + error.message, '❌');
                 }
             } catch (e) {
-                console.log('Network error sending wish, falling back to localStorage:', e);
+                console.error('Supabase submit exception:', e);
+                showToast('Network error, could not send wish!', '❌');
             }
-
-            // 3. Fallback: Save to local array & localStorage if server/supabase unreachable
-            wishes.unshift(newWish);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-            renderWishes();
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
-            }
-            showToast('Wish sent safely! (Saved locally 🔒)', '💌');
         }
 
         // Render Wish Cards & Secret Owner Grid
@@ -639,66 +585,41 @@
             const currentLikes = targetWish ? (targetWish.likes || 0) : 0;
             const newLikes = increment ? currentLikes + 1 : Math.max(0, currentLikes - 1);
 
-            if (supabaseClient) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('wishes')
-                        .update({ likes: newLikes, hasLiked: increment })
-                        .eq('id', id);
-                    if (!error) {
-                        await fetchWishes();
-                        if (increment) showToast('Liked this wish! ❤️', '💖');
-                        return;
-                    }
-                } catch (e) {
-                    console.log('Supabase like error:', e);
-                }
-            }
+            if (!supabaseClient) return;
 
             try {
-                const response = await fetch(`${API_BASE}/api/like`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: id, increment: increment })
-                });
-                if (response.ok) {
+                const { error } = await supabaseClient
+                    .from('wishes')
+                    .update({ likes: newLikes, hasLiked: increment })
+                    .eq('id', id);
+                if (!error) {
                     await fetchWishes();
                     if (increment) showToast('Liked this wish! ❤️', '💖');
-                    return;
+                } else {
+                    console.error('Supabase like error:', error);
                 }
             } catch (e) {
-                console.log('Error liking wish, falling back to local toggle:', e);
-            }
-
-            // Local fallback for like
-            if (targetWish) {
-                targetWish.hasLiked = increment;
-                targetWish.likes = newLikes;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-                renderWishes();
-                if (increment) showToast('Liked this wish! ❤️', '💖');
+                console.error('Supabase like exception:', e);
             }
         };
 
         // Reset Wishes Function
         window.resetWishes = async function() {
             if (confirm('Are you sure you want to reset all wishes?')) {
-                if (supabaseClient) {
-                    try {
-                        await supabaseClient.from('wishes').delete().neq('id', '0');
-                    } catch (e) {
-                        console.log('Error resetting wishes in Supabase:', e);
-                    }
-                }
+                if (!supabaseClient) return;
                 try {
-                    await fetch(`${API_BASE}/api/reset`, { method: 'POST' });
+                    const { error } = await supabaseClient.from('wishes').delete().neq('id', '0');
+                    if (!error) {
+                        wishes = [];
+                        renderWishes();
+                        showToast('All wishes have been reset!', '🗑️');
+                    } else {
+                        console.error('Error resetting wishes in Supabase:', error);
+                        showToast('Failed to reset wishes: ' + error.message, '❌');
+                    }
                 } catch (e) {
-                    console.log('Error resetting wishes on server:', e);
+                    console.error('Error resetting wishes in Supabase:', e);
                 }
-                wishes = [];
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
-                renderWishes();
-                showToast('All wishes have been reset!', '🗑️');
             }
         };
 
