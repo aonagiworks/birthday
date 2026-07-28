@@ -324,11 +324,23 @@
                 if (response.ok) {
                     const data = await response.json();
                     wishes = data;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
                     renderWishes();
+                    return;
                 }
             } catch (e) {
-                console.log('Error fetching wishes:', e);
+                console.log('Backend API unavailable, using localStorage fallback:', e);
             }
+            // Fallback: Read from localStorage
+            try {
+                const localData = localStorage.getItem(STORAGE_KEY);
+                if (localData) {
+                    wishes = JSON.parse(localData);
+                }
+            } catch (e) {
+                console.log('Error parsing local storage wishes:', e);
+            }
+            renderWishes();
         }
 
         let wishes = [];
@@ -497,17 +509,24 @@
                 
                 if (response.ok) {
                     await fetchWishes(); // Reload to get exact server state
-                    // Trigger Confetti
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
                     }
                     showToast('Wish sent safely! (Only readable by maniezz 🔒)', '💌');
-                } else {
-                    showToast('Failed to send wish. Please try again.', '❌');
+                    return;
                 }
             } catch (e) {
-                showToast('Network error, could not send wish.', '❌');
+                console.log('Network error sending wish, falling back to localStorage:', e);
             }
+
+            // Fallback: Save to local array & localStorage if server fails/unreachable
+            wishes.unshift(newWish);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
+            renderWishes();
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+            }
+            showToast('Wish sent safely! (Saved locally 🔒)', '💌');
         }
 
         // Render Wish Cards & Secret Owner Grid
@@ -565,9 +584,21 @@
                 if (response.ok) {
                     await fetchWishes();
                     if (increment) showToast('Liked this wish! ❤️', '💖');
+                    return;
                 }
             } catch (e) {
-                console.log('Error liking wish:', e);
+                console.log('Error liking wish, falling back to local toggle:', e);
+            }
+
+            // Local fallback for like
+            const targetWish = wishes.find(w => w.id === id);
+            if (targetWish) {
+                targetWish.hasLiked = increment;
+                targetWish.likes = (targetWish.likes || 0) + (increment ? 1 : -1);
+                if (targetWish.likes < 0) targetWish.likes = 0;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
+                renderWishes();
+                if (increment) showToast('Liked this wish! ❤️', '💖');
             }
         };
 
@@ -575,14 +606,14 @@
         window.resetWishes = async function() {
             if (confirm('Are you sure you want to reset all wishes?')) {
                 try {
-                    const response = await fetch(`${API_BASE}/api/reset`, { method: 'POST' });
-                    if (response.ok) {
-                        await fetchWishes();
-                        showToast('All wishes have been reset!', '🗑️');
-                    }
+                    await fetch(`${API_BASE}/api/reset`, { method: 'POST' });
                 } catch (e) {
-                    console.log('Error resetting wishes:', e);
+                    console.log('Error resetting wishes on server:', e);
                 }
+                wishes = [];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes));
+                renderWishes();
+                showToast('All wishes have been reset!', '🗑️');
             }
         };
 
