@@ -503,8 +503,7 @@
                 name: name,
                 message: msg,
                 timestamp: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-                likes: 0,
-                hasLiked: false
+                likes: 0
             };
 
             nameInput.value = '';
@@ -535,6 +534,8 @@
             }
         }
 
+        let likedWishIds = new Set();
+
         // Render Wish Cards & Secret Owner Grid
         function renderWishes() {
             const countLabel = document.getElementById('msgCount');
@@ -555,7 +556,8 @@
                         const msgStr = s.message || s.msg || '';
                         const timeStr = s.timestamp || s.time || 'Just now';
                         const likesNum = s.likes || 0;
-                        const likeColor = s.hasLiked ? 'text-red-500' : 'text-pink-soft';
+                        const isLiked = likedWishIds.has(s.id);
+                        const likeColor = isLiked ? 'text-red-500' : 'text-pink-soft';
                         return `
                         <div class="bg-white/10 backdrop-blur-[10px] border border-white/15 rounded-[16px] p-5 text-left flex flex-col justify-between">
                             <div>
@@ -569,7 +571,7 @@
                                 <div class="text-white/95 text-[0.94rem] leading-relaxed italic mb-4 break-words">"${escapeHTML(msgStr)}"</div>
                             </div>
                             <div class="flex justify-end pt-2 border-t border-white/10">
-                                <button class="bg-white/10 border border-white/20 px-3 py-1 rounded-full ${likeColor} text-xs font-semibold cursor-pointer flex items-center gap-1 hover:bg-white/20 transition-all" onclick="likeWish('${s.id}', ${!s.hasLiked})">
+                                <button class="bg-white/10 border border-white/20 px-3 py-1 rounded-full ${likeColor} text-xs font-semibold cursor-pointer flex items-center gap-1 hover:bg-white/20 transition-all" onclick="likeWish('${s.id}', ${!isLiked})">
                                     ❤️ <span>${likesNum}</span>
                                 </button>
                             </div>
@@ -590,9 +592,11 @@
             try {
                 const { error } = await supabaseClient
                     .from('wishes')
-                    .update({ likes: newLikes, hasLiked: increment })
+                    .update({ likes: newLikes })
                     .eq('id', id);
                 if (!error) {
+                    if (increment) likedWishIds.add(id);
+                    else likedWishIds.delete(id);
                     await fetchWishes();
                     if (increment) showToast('Liked this wish! ❤️', '💖');
                 } else {
