@@ -523,7 +523,7 @@
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
                     }
-                    showToast('Wish sent safely to Cloud DB! ☁️🔒', '💌');
+                    showToast('wishes has been sent☁️🔒', '💌');
                 } else {
                     console.error('Supabase insert error:', error);
                     showToast('Failed to send wish: ' + error.message, '❌');
